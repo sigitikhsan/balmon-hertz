@@ -14,5 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // TODO: ganti dengan data real 4 job/divisi Balmon (Batch 0.1). Nilai di bawah placeholder internal satu instansi.
+    $latestInternships = collect([
+        ['company_name' => 'Balmon Hertz', 'location' => 'Kantor Balmon', 'title' => 'Asisten Monitoring Spektrum', 'type' => 'WFO', 'duration' => '3 Bulan'],
+        ['company_name' => 'Balmon Hertz', 'location' => 'Kantor Balmon', 'title' => 'Asisten Teknik Pengukuran', 'type' => 'WFO', 'duration' => '3 Bulan'],
+        ['company_name' => 'Balmon Hertz', 'location' => 'Kantor Balmon', 'title' => 'Asisten Administrasi', 'type' => 'WFO', 'duration' => '3 Bulan'],
+        ['company_name' => 'Balmon Hertz', 'location' => 'Kantor Balmon', 'title' => 'Asisten Layanan Informasi', 'type' => 'WFO', 'duration' => '3 Bulan'],
+    ])->map(fn ($item) => (object) $item);
+
+    return view('welcome', compact('latestInternships'));
 });
+
+Route::get('/login', fn () => 'Halaman login (placeholder)')->name('login');
+Route::get('/register', fn () => 'Halaman register (placeholder)')->name('register');
