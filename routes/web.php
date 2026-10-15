@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,3 +29,9 @@ Route::get('/', function () {
 
 Route::get('/login', fn () => 'Halaman login (placeholder)')->name('login');
 Route::get('/register', fn () => 'Halaman register (placeholder)')->name('register');
+
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/apply/{job:slug}', [ApplicationController::class, 'create'])->name('apply.create');
+Route::post('/apply/{job:slug}', [ApplicationController::class, 'store'])->middleware('throttle:10,1')->name('apply.store');
+Route::get('/status', [ApplicationController::class, 'statusForm'])->name('status.form');
+Route::get('/status/result', [ApplicationController::class, 'statusResult'])->name('status.result');

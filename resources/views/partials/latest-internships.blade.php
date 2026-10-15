@@ -5,7 +5,7 @@
             <p class="text-sm font-normal text-slate-600 leading-relaxed mt-1">Peluang magang dan PKL segar minggu ini</p>
         </div>
         @if($latestInternships->isNotEmpty())
-            <span class="text-xs font-medium px-3 py-1 bg-blue-50 text-blue-600 rounded-full">Menampilkan {{ $latestInternships->count() }} Lowongan Terbaru</span>
+            <a href="{{ route('jobs.index') }}" class="group inline-flex items-center gap-1 text-xs font-medium px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">Lihat Selengkapnya <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12" /></svg></a>
         @endif
     </div>
 

@@ -18,7 +18,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .anim-rise { opacity: 0; animation: rise 0.7s ease-out forwards; }
-        .anim-d1 { animation-delay: 0.05s; }
         .anim-d2 { animation-delay: 0.15s; }
         .anim-d3 { animation-delay: 0.3s; }
         .anim-d4 { animation-delay: 0.45s; }
