@@ -13,6 +13,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(10)->create();
+        // Create Super Admin
+        \App\Models\User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@maganhertz.local',
+            'password' => bcrypt('password'),
+            'role' => 'super_admin',
+            'status' => 'aktif',
+        ]);
+
+        // Create Admin
+        \App\Models\User::create([
+            'name' => 'Admin',
+            'email' => 'admin@maganhertz.local',
+            'password' => bcrypt('password'),
+            'role' => 'admin',
+            'status' => 'aktif',
+        ]);
     }
 }

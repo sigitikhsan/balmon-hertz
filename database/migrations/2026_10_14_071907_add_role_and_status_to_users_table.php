@@ -10,14 +10,14 @@ class AddRoleAndStatusToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('role', 20)->default('admin')->after('password');
-            $table->boolean('is_active')->default(true)->after('role');
+            $table->string('status', 20)->default('aktif')->after('role');
         });
     }
 
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['role', 'is_active']);
+            $table->dropColumn(['role', 'status']);
         });
     }
 }
