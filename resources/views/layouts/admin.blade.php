@@ -35,7 +35,7 @@
                     @php
                         $role = auth()->user()->role ?? 'admin';
                         $menu = [];
-                        if ($role === 'super_admin') {
+                        if ($role === 'superadmin') {
                             $menu = [
                                 ['icon' => 'gauge', 'label' => 'Dashboard', 'route' => '#'],
                                 ['icon' => 'users-gear', 'label' => 'Manajemen Akun Admin', 'route' => '#'],
@@ -77,7 +77,7 @@
             </nav>
 
             <div class="p-6 border-t border-white/10">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('internal.logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="flex items-center gap-3 text-sm text-gray-300 hover:text-white">
                         <i class="fa-solid fa-right-from-bracket w-5"></i>

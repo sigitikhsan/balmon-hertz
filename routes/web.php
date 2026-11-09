@@ -35,3 +35,16 @@ Route::get('/apply/{job:slug}', [ApplicationController::class, 'create'])->name(
 Route::post('/apply/{job:slug}', [ApplicationController::class, 'store'])->middleware('throttle:10,1')->name('apply.store');
 Route::get('/status', [ApplicationController::class, 'statusForm'])->name('status.form');
 Route::get('/status/result', [ApplicationController::class, 'statusResult'])->name('status.result');
+
+use App\Http\Controllers\Internal\LoginController;
+use App\Http\Controllers\Internal\DashboardController;
+
+Route::prefix('akses-internal')->group(function () {
+    Route::get('/', [LoginController::class, 'showLoginForm'])->name('internal.login');
+    Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1')->name('internal.login.post');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('internal.logout');
+
+    Route::middleware(['internal.auth'])->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('internal.dashboard');
+    });
+});
