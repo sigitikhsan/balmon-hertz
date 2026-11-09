@@ -36,14 +36,20 @@ Route::post('/apply/{job:slug}', [ApplicationController::class, 'store'])->middl
 Route::get('/status', [ApplicationController::class, 'statusForm'])->name('status.form');
 Route::get('/status/result', [ApplicationController::class, 'statusResult'])->name('status.result');
 
+
+// Internal admin login routes (protected)
 use App\Http\Controllers\Internal\LoginController;
 use App\Http\Controllers\Internal\DashboardController;
 
 Route::prefix('akses-internal')->group(function () {
+    // Login form
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('internal.login');
-    Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1')->name('internal.login.post');
+    // Process login with throttle (5 attempts / minute) – middleware defined in controller
+    Route::post('/login', [LoginController::class, 'login'])->name('internal.login.post');
+    // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('internal.logout');
 
+    // Protected dashboard – hanya admin & superadmin
     Route::middleware(['internal.auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('internal.dashboard');
     });
