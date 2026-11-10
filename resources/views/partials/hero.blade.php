@@ -9,8 +9,8 @@
         <a href="#katalog" class="px-6 py-3 min-h-[44px] inline-flex items-center justify-center bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
             Jelajahi Lowongan
         </a>
-        <a href="{{ route('register') }}" class="px-6 py-3 min-h-[44px] inline-flex items-center justify-center bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
-            Daftar Sekarang
+        <a href="{{ route('jobs.index') }}" class="px-6 py-3 min-h-[44px] inline-flex items-center justify-center bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2">
+            Lihat Semua Lowongan
         </a>
     </div>
 </section>

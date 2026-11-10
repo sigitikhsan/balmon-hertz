@@ -38,8 +38,6 @@
                                 <p class="mt-1 text-xs font-normal text-slate-600 leading-relaxed">Jurusan: {{ $job->jurusan }}</p>
                             @endif
                             <div class="flex flex-wrap gap-2 mt-3 mb-6">
-                                <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">{{ $job->type }}</span>
-                                <span class="px-2.5 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded-md">{{ $job->duration }}</span>
                                 <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Kuota {{ $job->quota }}</span>
                             </div>
                         </div>
@@ -59,8 +57,12 @@
                                 <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-md">Kuota {{ $job->quota }}</span>
                             </div>
                             <p class="mt-4 text-sm font-normal text-slate-600 leading-relaxed">{{ $job->description }}</p>
+                            @if($job->responsibilities)
+                                <h3 class="mt-4 font-bold text-slate-900 text-sm">Job Responsibility</h3>
+                                <p class="mt-1 text-sm font-normal text-slate-600 leading-relaxed">{{ $job->responsibilities }}</p>
+                            @endif
                             @if($job->requirements)
-                                <h3 class="mt-4 font-bold text-slate-900 text-sm">Syarat</h3>
+                                <h3 class="mt-4 font-bold text-slate-900 text-sm">What We're Looking For</h3>
                                 <p class="mt-1 text-sm font-normal text-slate-600 leading-relaxed">{{ $job->requirements }}</p>
                             @endif
                             @if($job->jurusan)

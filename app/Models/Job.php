@@ -18,6 +18,7 @@ class Job extends Model
         'duration',
         'quota',
         'description',
+        'responsibilities',
         'requirements',
         'jurusan',
         'status',
