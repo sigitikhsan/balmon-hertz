@@ -107,7 +107,7 @@
                     <div class="flex items-center gap-3 border-l pl-6">
                         <div class="text-right hidden sm:block">
                             <p class="text-sm font-bold leading-none">{{ auth()->user()->name ?? 'User' }}</p>
-                            <p class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', auth()->user()->role ?? 'Admin') }}</p>
+                            <p class="text-xs text-gray-500 capitalize">{{ ['superadmin' => 'Super Admin', 'admin' => 'Admin'][auth()->user()->role ?? 'admin'] ?? ucfirst(auth()->user()->role ?? 'Admin') }}</p>
                         </div>
                         <div class="w-10 h-10 bg-blue-primary rounded-full flex items-center justify-center text-white font-bold">
                             {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}

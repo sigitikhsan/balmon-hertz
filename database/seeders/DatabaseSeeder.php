@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@maganhertz.local',
             'password' => bcrypt('password'),
-            'role' => 'super_admin',
+            'role' => 'superadmin',
             'status' => 'aktif',
         ]);
 

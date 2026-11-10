@@ -34,6 +34,31 @@ class LoginTest extends TestCase
 
         $dashboardResponse = $this->get('/akses-internal/dashboard');
         $dashboardResponse->assertStatus(200);
+        // Menu khusus superadmin tidak tampil untuk admin biasa
+        $dashboardResponse->assertDontSee('Manajemen Akun Admin');
+    }
+
+    public function test_superadmin_can_login_and_access_dashboard()
+    {
+        $user = User::factory()->create([
+            'email' => 'superadmin@balmon.test',
+            'password' => bcrypt('password123'),
+            'role' => 'superadmin',
+        ]);
+
+        $response = $this->post('/akses-internal/login', [
+            'email' => 'superadmin@balmon.test',
+            'password' => 'password123',
+        ]);
+
+        $response->assertRedirect('/akses-internal/dashboard');
+        $this->assertAuthenticatedAs($user);
+
+        $dashboardResponse = $this->get('/akses-internal/dashboard');
+        $dashboardResponse->assertStatus(200);
+        // Menu khusus superadmin tampil di sidebar
+        $dashboardResponse->assertSee('Manajemen Akun Admin');
+        $dashboardResponse->assertSee('Role & Hak Akses');
     }
 
     public function test_regular_user_cannot_access_internal_dashboard()
