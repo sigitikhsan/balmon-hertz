@@ -103,19 +103,19 @@
             [
                 'label' => 'Notifikasi & Email',
                 'icon' => 'fa-bell',
-                'url' => '#notifikasi',
+                'url' => route('internal.notifications.index'),
                 'section' => 'main'
             ],
             [
                 'label' => 'Audit Log Aktivitas',
                 'icon' => 'fa-clock-rotate-left',
-                'url' => '#audit-log',
+                'url' =>  route('internal.audit-logs.index'),
                 'section' => 'main'
             ],
             [
                 'label' => 'Pengaturan Sistem',
                 'icon' => 'fa-gear',
-                'url' => '#pengaturan',
+                'url' => route('internal.settings.index'),
                 'section' => 'main'
             ],
         ];

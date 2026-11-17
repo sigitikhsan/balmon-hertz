@@ -12,6 +12,9 @@ use App\Http\Controllers\Internal\ApplicationManagementController;
 use App\Http\Controllers\Internal\ParticipantManagementController;
 use App\Http\Controllers\Internal\PeriodManagementController;
 use App\Http\Controllers\Internal\FieldManagementController;
+use App\Http\Controllers\Internal\NotificationManagementController;
+use App\Http\Controllers\Internal\AuditLogController;
+use App\Http\Controllers\Internal\SettingsManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,15 +72,20 @@ Route::middleware(['internal.auth'])->group(function () {
     Route::get('/fields', [FieldManagementController::class, 'index'])
         ->name('internal.fields.index');
 
+    Route::get('/notifications', [NotificationManagementController::class, 'index'])
+    ->name('internal.notifications.index');
+
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])
+    ->name('internal.audit-logs.index');
+
     // Khusus Super Admin
     Route::middleware(['superadmin'])->group(function () {
+        Route::get('/admins', [AdminManagementController::class, 'index'])->name('internal.admins.index');
 
-        Route::get('/admins', [AdminManagementController::class, 'index'])
-            ->name('internal.admins.index');
+        Route::get('/roles', [RoleManagementController::class, 'index'])->name('internal.roles.index');
 
-        Route::get('/roles', [RoleManagementController::class, 'index'])
-            ->name('internal.roles.index');
-
+        Route::get('/settings', [SettingsManagementController::class, 'index'])
+            ->name('internal.settings.index');
         });
 
     });
