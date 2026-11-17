@@ -6,6 +6,12 @@ use App\Http\Controllers\Internal\LoginController;
 use App\Http\Controllers\JobController;
 use App\Models\Job;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Internal\AdminManagementController;
+use App\Http\Controllers\Internal\RoleManagementController;
+use App\Http\Controllers\Internal\ApplicationManagementController;
+use App\Http\Controllers\Internal\ParticipantManagementController;
+use App\Http\Controllers\Internal\PeriodManagementController;
+use App\Http\Controllers\Internal\FieldManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +49,37 @@ Route::prefix('akses-internal')->group(function () {
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('internal.logout');
 
-    // Protected dashboard – hanya admin & superadmin
-    Route::middleware(['internal.auth'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('internal.dashboard');
+// Protected dashboard – hanya admin & superadmin
+Route::middleware(['internal.auth'])->group(function () {
+
+    // Dashboard Admin dan Super Admin
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('internal.dashboard');
+
+    // Menu Admin dan Super Admin
+    Route::get('/applications', [ApplicationManagementController::class, 'index'])
+        ->name('internal.applications.index');
+
+    Route::get('/participants', [ParticipantManagementController::class, 'index'])
+        ->name('internal.participants.index');
+
+    Route::get('/periods', [PeriodManagementController::class, 'index'])
+        ->name('internal.periods.index');
+
+    Route::get('/fields', [FieldManagementController::class, 'index'])
+        ->name('internal.fields.index');
+
+    // Khusus Super Admin
+    Route::middleware(['superadmin'])->group(function () {
+
+        Route::get('/admins', [AdminManagementController::class, 'index'])
+            ->name('internal.admins.index');
+
+        Route::get('/roles', [RoleManagementController::class, 'index'])
+            ->name('internal.roles.index');
+
+        });
+
     });
+
 });
