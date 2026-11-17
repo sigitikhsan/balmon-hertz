@@ -62,60 +62,70 @@
                 'label' => 'Dashboard',
                 'icon' => 'fa-gauge-high',
                 'url' => route('internal.dashboard'),
+                'route' => 'internal.dashboard',
                 'section' => 'main'
             ],
             [
                 'label' => 'Manajemen Akun Admin',
                 'icon' => 'fa-users-gear',
                 'url' => route('internal.admins.index'),
+                'route' => 'internal.admins.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Role & Hak Akses',
                 'icon' => 'fa-shield-halved',
                 'url' => route('internal.roles.index'),
+                'route' => 'internal.roles.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Pendaftaran Peserta',
                 'icon' => 'fa-file-signature',
                 'url' => route('internal.applications.index'),
+                'route' => 'internal.applications.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Peserta PKL',
                 'icon' => 'fa-users',
                 'url' => route('internal.participants.index'),
+                'route' => 'internal.participants.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Periode & Kuota',
                 'icon' => 'fa-calendar-days',
                 'url' => route('internal.periods.index'),
+                'route' => 'internal.periods.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Bidang Magang',
                 'icon' => 'fa-briefcase',
                 'url' => route('internal.fields.index'),
+                'route' => 'internal.fields.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Notifikasi & Email',
                 'icon' => 'fa-bell',
                 'url' => route('internal.notifications.index'),
+                'route' => 'internal.notifications.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Audit Log Aktivitas',
                 'icon' => 'fa-clock-rotate-left',
                 'url' =>  route('internal.audit-logs.index'),
+                'route' => 'internal.audit-logs.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Pengaturan Sistem',
                 'icon' => 'fa-gear',
                 'url' => route('internal.settings.index'),
+                'route' => 'internal.settings.index',
                 'section' => 'main'
             ],
         ];
@@ -130,76 +140,84 @@
             [
                 'label' => 'Dashboard',
                 'icon' => 'fa-gauge-high',
-                'url' => '#dashboard',
+                'url' => route('internal.dashboard'),
+                'route' => 'internal.dashboard',
                 'section' => 'main'
             ],
             [
                 'label' => 'Pendaftaran Peserta',
                 'icon' => 'fa-file-signature',
-                'url' => '#pendaftaran',
+                'url' => route('internal.applications.index'),
+                'route' => 'internal.applications.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Verifikasi Dokumen',
                 'icon' => 'fa-clipboard-check',
-                'url' => '#verifikasi',
+                'url' => route('internal.verifications.index'),
+                'route' => 'internal.verifications.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Peserta PKL',
                 'icon' => 'fa-users',
-                'url' => '#peserta',
+                'url' => route('internal.participants.index'),
+                'route' => 'internal.participants.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Periode & Kuota',
                 'icon' => 'fa-calendar-days',
-                'url' => '#periode',
+                'url' => route('internal.periods.index'),
+                'route' => 'internal.periods.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Bidang Magang',
                 'icon' => 'fa-briefcase',
-                'url' => '#bidang',
+                'url' => route('internal.fields.index'),
+                'route' => 'internal.fields.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Penempatan Peserta',
                 'icon' => 'fa-map-location-dot',
-                'url' => '#penempatan',
+                'url' => route('internal.placements.index'),
+                'route' => 'internal.placements.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Status PKL',
                 'icon' => 'fa-user-check',
-                'url' => '#status-pkl',
+                'url' => route('internal.statuses.index'),
+                'route' => 'internal.statuses.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Notifikasi & Email',
                 'icon' => 'fa-bell',
-                'url' => '#notifikasi',
+                'url' => route('internal.notifications.index'),
+                'route' => 'internal.notifications.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Audit Log Aktivitas',
                 'icon' => 'fa-clock-rotate-left',
-                'url' => '#audit-log',
+                'url' => route('internal.audit-logs.index'),
+                'route' => 'internal.audit-logs.index',
                 'section' => 'main'
             ],
             [
                 'label' => 'Laporan & Rekapitulasi',
                 'icon' => 'fa-chart-line',
-                'url' => '#laporan',
+                'url' => route('internal.reports.index'),
+                'route' => 'internal.reports.index',
                 'section' => 'main'
             ],
         ];
 
         $menuItems = $isSuperAdmin ? $superAdminMenu : $adminMenu;
 
-        $pageTitle = trim($__env->yieldContent('page_title'));
-
-        $isDashboard = strtolower($pageTitle) === 'dashboard';
     @endphp
 
 
@@ -263,12 +281,12 @@
 
                 <ul class="sidebar-menu">
 
-                    @foreach ($menuItems as $index => $item)
+                    @foreach ($menuItems as $item)
 
                         <li class="sidebar-menu-item">
 
                             <a href="{{ $item['url'] }}"
-                                class="sidebar-link {{ ($index === 0 && $isDashboard) ? 'active' : '' }}"
+                                class="sidebar-link {{ request()->routeIs($item['route']) ? 'active' : '' }}"
                                 data-menu-label="{{ $item['label'] }}">
 
                                 <span class="sidebar-icon">

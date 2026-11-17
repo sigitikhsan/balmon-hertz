@@ -38,6 +38,36 @@ class LoginTest extends TestCase
         $dashboardResponse->assertDontSee('Manajemen Akun Admin');
     }
 
+    public function test_admin_sidebar_destinations_are_available()
+    {
+        $user = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $this->actingAs($user);
+
+        $routes = [
+            'internal.dashboard',
+            'internal.applications.index',
+            'internal.verifications.index',
+            'internal.participants.index',
+            'internal.periods.index',
+            'internal.fields.index',
+            'internal.placements.index',
+            'internal.statuses.index',
+            'internal.notifications.index',
+            'internal.audit-logs.index',
+            'internal.reports.index',
+        ];
+
+        $dashboard = $this->get(route('internal.dashboard'))->assertOk();
+
+        foreach ($routes as $routeName) {
+            $dashboard->assertSee(route($routeName), false);
+            $this->get(route($routeName))->assertOk();
+        }
+    }
+
     public function test_superadmin_can_login_and_access_dashboard()
     {
         $user = User::factory()->create([

@@ -15,6 +15,7 @@ use App\Http\Controllers\Internal\FieldManagementController;
 use App\Http\Controllers\Internal\NotificationManagementController;
 use App\Http\Controllers\Internal\AuditLogController;
 use App\Http\Controllers\Internal\SettingsManagementController;
+use App\Http\Controllers\Internal\AdminWorkspaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,11 +73,23 @@ Route::middleware(['internal.auth'])->group(function () {
     Route::get('/fields', [FieldManagementController::class, 'index'])
         ->name('internal.fields.index');
 
+    Route::get('/verifications', [AdminWorkspaceController::class, 'verifications'])
+        ->name('internal.verifications.index');
+
+    Route::get('/placements', [AdminWorkspaceController::class, 'placements'])
+        ->name('internal.placements.index');
+
+    Route::get('/statuses', [AdminWorkspaceController::class, 'statuses'])
+        ->name('internal.statuses.index');
+
+    Route::get('/reports', [AdminWorkspaceController::class, 'reports'])
+        ->name('internal.reports.index');
+
     Route::get('/notifications', [NotificationManagementController::class, 'index'])
-    ->name('internal.notifications.index');
+        ->name('internal.notifications.index');
 
     Route::get('/audit-logs', [AuditLogController::class, 'index'])
-    ->name('internal.audit-logs.index');
+        ->name('internal.audit-logs.index');
 
     // Khusus Super Admin
     Route::middleware(['superadmin'])->group(function () {
