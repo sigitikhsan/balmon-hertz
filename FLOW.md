@@ -16,6 +16,7 @@
 
 1. Login `/admin` (role `admin`, akun aktif).
 2. Kelola periode + kuota, bidang magang (CRUD), lowongan (buka/tutup).
+   Periode diarsipkan dengan status nonaktif, bukan dihapus permanen.
 3. Lihat daftar lamaran (pagination), verifikasi CV/surat.
 4. Ubah status: diterima / ditolak (wajib alasan) / perlu perbaikan.
 5. Keputusan status membuat email dari template aktif dan masuk antrean pengiriman.

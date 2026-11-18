@@ -78,6 +78,16 @@ Route::middleware(['internal.auth'])->group(function () {
 
     Route::get('/periods', [PeriodManagementController::class, 'index'])
         ->name('internal.periods.index');
+    Route::get('/periods/create', [PeriodManagementController::class, 'create'])
+        ->name('internal.periods.create');
+    Route::post('/periods', [PeriodManagementController::class, 'store'])
+        ->name('internal.periods.store');
+    Route::get('/periods/{period}/edit', [PeriodManagementController::class, 'edit'])
+        ->name('internal.periods.edit');
+    Route::put('/periods/{period}', [PeriodManagementController::class, 'update'])
+        ->name('internal.periods.update');
+    Route::patch('/periods/{period}/status', [PeriodManagementController::class, 'updateStatus'])
+        ->name('internal.periods.status');
 
     Route::get('/fields', [FieldManagementController::class, 'index'])
         ->name('internal.fields.index');

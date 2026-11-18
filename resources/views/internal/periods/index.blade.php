@@ -6,6 +6,16 @@
 
 @section('content')
 <div class="space-y-6">
+    @if (session('success'))
+        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700" role="status">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+            {{ $errors->first() }}
+        </div>
+    @endif
 
     {{-- Ringkasan --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
@@ -71,7 +81,7 @@
     {{-- Tabel Periode --}}
     <div class="bg-white rounded-xl shadow-sm border border-slate-200">
 
-        <div class="p-5 border-b border-slate-200">
+        <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h3 class="text-lg font-semibold text-slate-800">
                     Daftar Periode Magang
@@ -80,6 +90,10 @@
                     Informasi periode dan kapasitas penerimaan peserta magang.
                 </p>
             </div>
+            <a href="{{ route('internal.periods.create') }}"
+               class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium">
+                <i class="fa-solid fa-plus mr-2"></i>Tambah Periode
+            </a>
         </div>
 
         <div class="overflow-x-auto">
@@ -95,6 +109,7 @@
                         <th class="px-5 py-4 font-semibold">Lowongan</th>
                         <th class="px-5 py-4 font-semibold">Peserta Diterima</th>
                         <th class="px-5 py-4 font-semibold">Status</th>
+                        <th class="px-5 py-4 font-semibold">Aksi</th>
                     </tr>
                 </thead>
 
@@ -163,12 +178,29 @@
                                 @endif
                             </td>
 
+                            <td class="px-5 py-4">
+                                <div class="flex flex-col items-start gap-2">
+                                    <a href="{{ route('internal.periods.edit', $period) }}"
+                                       class="text-sm font-medium text-blue-700 hover:text-blue-900">
+                                        Ubah
+                                    </a>
+                                    <form action="{{ route('internal.periods.status', $period) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="is_active" value="{{ $period->is_active ? 0 : 1 }}">
+                                        <button type="submit" class="text-sm font-medium text-slate-600 hover:text-slate-900">
+                                            {{ $period->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+
                         </tr>
 
                     @empty
 
                         <tr>
-                            <td colspan="8" class="px-5 py-12 text-center">
+                            <td colspan="9" class="px-5 py-12 text-center">
                                 <div class="flex flex-col items-center">
 
                                     <div class="w-14 h-14 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-3">
