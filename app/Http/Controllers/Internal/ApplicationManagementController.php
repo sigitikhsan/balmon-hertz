@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\AuditLog;
 use App\Models\EmailLog;
+use App\Models\Job;
+use App\Models\Period;
 use App\Jobs\SendApplicationStatusEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,7 +87,11 @@ class ApplicationManagementController extends Controller
             'note' => ['nullable', 'string', 'max:2000', 'required_if:status,ditolak,perlu_perbaikan'],
         ]);
 
-        $emailLogId = DB::transaction(function () use ($data, $application, $request) {
+        $periodId = $data['status'] === Application::STATUS_DITERIMA
+            ? Job::whereKey($application->job_id)->value('period_id')
+            : null;
+
+        $emailLogId = DB::transaction(function () use ($data, $application, $request, $periodId) {
             $lockedApplication = Application::whereKey($application->getKey())
                 ->lockForUpdate()
                 ->firstOrFail();
@@ -95,6 +101,47 @@ class ApplicationManagementController extends Controller
                 throw ValidationException::withMessages([
                     'status' => 'Transisi status lamaran tersebut tidak diperbolehkan.',
                 ]);
+            }
+
+            if ($data['status'] === Application::STATUS_DITERIMA) {
+                $period = Period::whereKey($periodId)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+                $job = Job::whereKey($lockedApplication->job_id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                if ((int) $job->period_id !== (int) $period->id) {
+                    throw ValidationException::withMessages([
+                        'status' => 'Periode lowongan berubah. Muat ulang halaman lalu coba lagi.',
+                    ]);
+                }
+
+                $acceptedForJob = Application::where('job_id', $job->id)
+                    ->where('status', Application::STATUS_DITERIMA)
+                    ->lockForUpdate()
+                    ->get(['id'])
+                    ->count();
+
+                if ($acceptedForJob >= $job->quota) {
+                    throw ValidationException::withMessages([
+                        'status' => 'Kuota lowongan sudah terpenuhi; lamaran tidak dapat diterima.',
+                    ]);
+                }
+
+                $acceptedForPeriod = Application::where('status', Application::STATUS_DITERIMA)
+                    ->whereHas('job', function ($query) use ($period) {
+                        $query->where('period_id', $period->id);
+                    })
+                    ->lockForUpdate()
+                    ->get(['applications.id'])
+                    ->count();
+
+                if ($acceptedForPeriod >= $period->quota) {
+                    throw ValidationException::withMessages([
+                        'status' => 'Kuota periode sudah terpenuhi; lamaran tidak dapat diterima.',
+                    ]);
+                }
             }
 
             $lockedApplication->status = $data['status'];

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Internal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Application;
 use App\Models\AuditLog;
+use App\Models\Job;
 use App\Models\Period;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class PeriodManagementController extends Controller
 {
@@ -92,6 +95,22 @@ class PeriodManagementController extends Controller
                 ->lockForUpdate()
                 ->firstOrFail();
             $oldValues = $this->periodValues($lockedPeriod);
+
+            $allocatedQuota = Job::where('period_id', $lockedPeriod->id)->sum('quota');
+            $acceptedCount = Application::where('status', Application::STATUS_DITERIMA)
+                ->whereHas('job', function ($query) use ($lockedPeriod) {
+                    $query->where('period_id', $lockedPeriod->id);
+                })
+                ->lockForUpdate()
+                ->get(['applications.id'])
+                ->count();
+
+            if ($data['quota'] < $allocatedQuota || $data['quota'] < $acceptedCount) {
+                throw ValidationException::withMessages([
+                    'quota' => 'Kuota periode tidak boleh lebih kecil dari alokasi lowongan atau jumlah peserta yang sudah diterima.',
+                ]);
+            }
+
             $lockedPeriod->update($data);
 
             AuditLog::create([

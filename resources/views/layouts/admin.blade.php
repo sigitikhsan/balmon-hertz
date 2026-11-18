@@ -101,6 +101,13 @@
                 'section' => 'main'
             ],
             [
+                'label' => 'Lowongan',
+                'icon' => 'fa-briefcase',
+                'url' => route('internal.jobs.index'),
+                'route' => 'internal.jobs.index',
+                'section' => 'main'
+            ],
+            [
                 'label' => 'Bidang Magang',
                 'icon' => 'fa-briefcase',
                 'url' => route('internal.fields.index'),
@@ -170,6 +177,13 @@
                 'icon' => 'fa-calendar-days',
                 'url' => route('internal.periods.index'),
                 'route' => 'internal.periods.index',
+                'section' => 'main'
+            ],
+            [
+                'label' => 'Lowongan',
+                'icon' => 'fa-briefcase',
+                'url' => route('internal.jobs.index'),
+                'route' => 'internal.jobs.index',
                 'section' => 'main'
             ],
             [

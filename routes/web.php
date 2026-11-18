@@ -11,6 +11,7 @@ use App\Http\Controllers\Internal\RoleManagementController;
 use App\Http\Controllers\Internal\ApplicationManagementController;
 use App\Http\Controllers\Internal\ParticipantManagementController;
 use App\Http\Controllers\Internal\PeriodManagementController;
+use App\Http\Controllers\Internal\JobManagementController;
 use App\Http\Controllers\Internal\FieldManagementController;
 use App\Http\Controllers\Internal\NotificationManagementController;
 use App\Http\Controllers\Internal\AuditLogController;
@@ -88,6 +89,17 @@ Route::middleware(['internal.auth'])->group(function () {
         ->name('internal.periods.update');
     Route::patch('/periods/{period}/status', [PeriodManagementController::class, 'updateStatus'])
         ->name('internal.periods.status');
+
+    Route::get('/jobs', [JobManagementController::class, 'index'])
+        ->name('internal.jobs.index');
+    Route::get('/jobs/create', [JobManagementController::class, 'create'])
+        ->name('internal.jobs.create');
+    Route::post('/jobs', [JobManagementController::class, 'store'])
+        ->name('internal.jobs.store');
+    Route::get('/jobs/{job}/edit', [JobManagementController::class, 'edit'])
+        ->name('internal.jobs.edit');
+    Route::put('/jobs/{job}', [JobManagementController::class, 'update'])
+        ->name('internal.jobs.update');
 
     Route::get('/fields', [FieldManagementController::class, 'index'])
         ->name('internal.fields.index');

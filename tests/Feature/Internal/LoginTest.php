@@ -52,6 +52,7 @@ class LoginTest extends TestCase
             'internal.verifications.index',
             'internal.participants.index',
             'internal.periods.index',
+            'internal.jobs.index',
             'internal.fields.index',
             'internal.placements.index',
             'internal.statuses.index',
