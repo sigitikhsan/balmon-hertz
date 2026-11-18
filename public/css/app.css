@@ -220,34 +220,29 @@ ul {
 .brand-logo {
 
     width: 43px;
-
+    
     height: 43px;
-
+    
     background: white;
-
+    
     border-radius: 10px;
-
+    
     display: flex;
-
+    
     justify-content: center;
-
+    
     align-items: center;
-
+    
     flex-shrink: 0;
-
-    color: var(--primary);
-
-    font-size: 26px;
-
-    font-weight: 800;
-
-    transform: skew(-5deg);
-
+    
+    overflow: hidden;
 }
 
-
-.brand-logo span {
-    transform: skew(5deg);
+.brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 3px;
 }
 
 

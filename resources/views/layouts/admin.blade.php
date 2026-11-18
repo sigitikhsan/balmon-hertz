@@ -238,7 +238,7 @@
             <div class="sidebar-brand">
 
                 <div class="brand-logo">
-                    <span>H</span>
+                <img src="{{ asset('images/logo-hertz.png') }}" alt="Logo Magang Hertz">
                 </div>
 
                 <div class="brand-text">
