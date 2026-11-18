@@ -30,5 +30,9 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'status' => 'aktif',
         ]);
+
+        $this->call([
+            EmailTemplateSeeder::class,
+        ]);
     }
 }

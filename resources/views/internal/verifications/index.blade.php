@@ -31,6 +31,7 @@
                         <th class="px-5 py-4 font-semibold">Posisi</th>
                         <th class="px-5 py-4 font-semibold">Dokumen</th>
                         <th class="px-5 py-4 font-semibold">Status</th>
+                        <th class="px-5 py-4 font-semibold text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -51,10 +52,16 @@
                                     {{ $application->status === 'menunggu' ? 'Menunggu' : 'Perlu Perbaikan' }}
                                 </span>
                             </td>
+                            <td class="px-5 py-4 text-center">
+                                <a href="{{ route('internal.applications.show', $application) }}"
+                                   class="inline-flex items-center px-3 py-2 rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100">
+                                    <i class="fa-solid fa-eye mr-2"></i>Detail
+                                </a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-5 py-12 text-center text-slate-500">
+                            <td colspan="6" class="px-5 py-12 text-center text-slate-500">
                                 Belum ada dokumen dalam antrean pemeriksaan.
                             </td>
                         </tr>

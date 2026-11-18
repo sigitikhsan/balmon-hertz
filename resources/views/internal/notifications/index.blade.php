@@ -6,18 +6,30 @@
 
 @section('content')
 <div class="space-y-6">
+    @if (session('success'))
+        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700" role="status">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('warning'))
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800" role="alert">
+            {{ session('warning') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+            {{ $errors->first() }}
+        </div>
+    @endif
 
     {{-- Ringkasan --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
             <p class="text-sm text-slate-500">Total Email</p>
             <h3 class="text-2xl font-bold text-slate-800 mt-2">
                 {{ number_format($totalEmails, 0, ',', '.') }}
             </h3>
-            <div class="mt-3 text-xs text-slate-500">
-                Seluruh riwayat email
-            </div>
+            <div class="mt-3 text-xs text-slate-500">Seluruh riwayat email</div>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
@@ -52,12 +64,10 @@
                 Menunggu pengiriman
             </div>
         </div>
-
     </div>
 
     {{-- Riwayat Email --}}
     <div class="bg-white rounded-xl shadow-sm border border-slate-200">
-
         <div class="p-5 border-b border-slate-200">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
@@ -70,7 +80,6 @@
 
             <form method="GET" action="{{ route('internal.notifications.index') }}"
                   class="mt-5 flex flex-col md:flex-row gap-3">
-
                 <input type="text"
                        name="search"
                        value="{{ $search }}"
@@ -83,6 +92,7 @@
                     <option value="sent" {{ $status === 'sent' ? 'selected' : '' }}>Terkirim</option>
                     <option value="failed" {{ $status === 'failed' ? 'selected' : '' }}>Gagal</option>
                     <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Menunggu</option>
+                    <option value="superseded" {{ $status === 'superseded' ? 'selected' : '' }}>Kedaluwarsa</option>
                 </select>
 
                 <button type="submit"
@@ -107,14 +117,14 @@
                         <th class="px-5 py-4">Channel</th>
                         <th class="px-5 py-4">Tanggal Pengiriman</th>
                         <th class="px-5 py-4">Status</th>
+                        <th class="px-5 py-4">Keterangan</th>
+                        <th class="px-5 py-4 text-center">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody class="divide-y divide-slate-100">
-
                     @forelse($emailLogs as $email)
                         <tr class="hover:bg-slate-50">
-
                             <td class="px-5 py-4">
                                 <div class="font-medium text-slate-800">
                                     {{ $email->to_email }}
@@ -149,6 +159,10 @@
                                     <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
                                         Menunggu
                                     </span>
+                                @elseif($email->status === 'superseded')
+                                    <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                                        Kedaluwarsa
+                                    </span>
                                 @else
                                     <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
                                         {{ ucfirst($email->status) }}
@@ -156,10 +170,28 @@
                                 @endif
                             </td>
 
+                            <td class="px-5 py-4 text-slate-600">
+                                {{ $email->error_message ?? '-' }}
+                            </td>
+
+                            <td class="px-5 py-4 text-center">
+                                @if($email->status === 'failed' && $email->application_status_history_id)
+                                    <form action="{{ route('internal.notifications.retry', $email) }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                                class="inline-flex items-center px-3 py-2 rounded-lg text-sm text-blue-700 bg-blue-50 hover:bg-blue-100">
+                                            <i class="fa-solid fa-rotate-right mr-2"></i>
+                                            Kirim ulang
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-slate-400">-</span>
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-5 py-12 text-center">
+                            <td colspan="7" class="px-5 py-12 text-center">
                                 <div class="flex flex-col items-center">
                                     <i class="fa-regular fa-envelope-open text-4xl text-slate-300 mb-3"></i>
                                     <p class="font-medium text-slate-600">Belum ada riwayat email</p>
@@ -170,7 +202,6 @@
                             </td>
                         </tr>
                     @endforelse
-
                 </tbody>
             </table>
         </div>
@@ -180,12 +211,10 @@
                 {{ $emailLogs->links() }}
             </div>
         @endif
-
     </div>
 
     {{-- Template Email --}}
     <div class="bg-white rounded-xl shadow-sm border border-slate-200">
-
         <div class="p-5 border-b border-slate-200">
             <h3 class="text-lg font-semibold text-slate-800">Template Email</h3>
             <p class="text-sm text-slate-500 mt-1">
@@ -194,19 +223,15 @@
         </div>
 
         <div class="divide-y divide-slate-100">
-
             @forelse($templates as $template)
                 <div class="p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-
                     <div>
                         <h4 class="font-semibold text-slate-800">
                             {{ $template->subject }}
                         </h4>
-
                         <p class="text-xs text-slate-400 mt-1">
                             Key: {{ $template->key }}
                         </p>
-
                         <p class="text-sm text-slate-500 mt-2">
                             {{ \Illuminate\Support\Str::limit(strip_tags($template->body), 120) }}
                         </p>
@@ -223,7 +248,6 @@
                             </span>
                         @endif
                     </div>
-
                 </div>
             @empty
                 <div class="p-10 text-center">
@@ -234,10 +258,7 @@
                     </p>
                 </div>
             @endforelse
-
         </div>
-
     </div>
-
 </div>
 @endsection

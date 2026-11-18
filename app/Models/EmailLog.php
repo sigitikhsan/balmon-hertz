@@ -11,12 +11,15 @@ class EmailLog extends Model
 
     protected $fillable = [
         'application_id',
+        'application_status_history_id',
         'to_email',
         'channel',
         'subject',
         'body',
         'status',
         'sent_at',
+        'attempts',
+        'error_message',
     ];
 
     protected $casts = [
@@ -26,5 +29,10 @@ class EmailLog extends Model
     public function application()
     {
         return $this->belongsTo(Application::class);
+    }
+
+    public function statusHistory()
+    {
+        return $this->belongsTo(ApplicationStatusHistory::class, 'application_status_history_id');
     }
 }

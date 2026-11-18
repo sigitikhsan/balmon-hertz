@@ -9,7 +9,8 @@
 3. Klik Daftar, isi form: nama, email, no HP, TTL, posisi (autofill), upload CV + surat lamaran (PDF/DOCX, maks 5MB).
 4. Terima nomor lamaran (`MH-2026-XXXX`). Aturan saat ini: 1 lamaran per email (bisa berubah).
 5. Cek status di `/status` pakai nomor lamaran atau email: menunggu / diterima / ditolak (+ alasan) / perlu perbaikan.
-6. Info diterima/ditolak dikirim via email HRD (dev: `MAIL_MAILER=log`).
+6. Info diterima/ditolak/perlu perbaikan dikirim via email HRD setelah status tersimpan.
+   Catatan admin wajib untuk penolakan dan permintaan perbaikan.
 
 ## 2. Admin
 
@@ -17,7 +18,8 @@
 2. Kelola periode + kuota, bidang magang (CRUD), lowongan (buka/tutup).
 3. Lihat daftar lamaran (pagination), verifikasi CV/surat.
 4. Ubah status: diterima / ditolak (wajib alasan) / perlu perbaikan.
-5. Tombol Terima/Tolak langsung kirim email template ke peserta.
+5. Keputusan status membuat email dari template aktif dan masuk antrean pengiriman.
+   Jika gagal setelah tiga percobaan, admin dapat meminta kirim ulang dari menu Notifikasi & Email.
 6. Kelola penempatan + status PKL (sedang PKL, selesai).
 7. Lihat laporan/rekap + audit log.
 
@@ -33,6 +35,8 @@
 
 - Repo: `github.com/sigitikhsan/balmon-hertz`, branch `main`.
 - Setup baru: `composer install`, `copy .env.example .env`, `php artisan key:generate`, `php artisan storage:link`, `php artisan serve`.
-- DB: 9 migration siap. Jangan `migrate` sebelum database dibuat.
+- DB: skema dikelola melalui migration. Jangan `migrate` sebelum database dibuat.
 - File lamaran: private storage (`storage/app/private`), bukan public URL.
+- Email: jalankan worker `php artisan queue:work database --queue=default` untuk memproses antrean dan retry.
+- Seeder template email: jalankan `php artisan db:seed --class="Database\\Seeders\\EmailTemplateSeeder"` jika template keputusan belum ada.
 - Commit wajib persetujuan pemilik sebelum push.

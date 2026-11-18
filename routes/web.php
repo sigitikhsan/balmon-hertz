@@ -64,6 +64,15 @@ Route::middleware(['internal.auth'])->group(function () {
     Route::get('/applications', [ApplicationManagementController::class, 'index'])
         ->name('internal.applications.index');
 
+    Route::get('/applications/{application}', [ApplicationManagementController::class, 'show'])
+        ->name('internal.applications.show');
+    Route::post('/applications/{application}/status', [ApplicationManagementController::class, 'updateStatus'])
+        ->name('internal.applications.status');
+    Route::get('/applications/{application}/documents/{document}/view', [ApplicationManagementController::class, 'viewDocument'])
+        ->name('internal.applications.documents.view');
+    Route::get('/applications/{application}/documents/{document}/download', [ApplicationManagementController::class, 'downloadDocument'])
+        ->name('internal.applications.documents.download');
+
     Route::get('/participants', [ParticipantManagementController::class, 'index'])
         ->name('internal.participants.index');
 
@@ -87,6 +96,9 @@ Route::middleware(['internal.auth'])->group(function () {
 
     Route::get('/notifications', [NotificationManagementController::class, 'index'])
         ->name('internal.notifications.index');
+    Route::post('/notifications/{emailLog}/retry', [NotificationManagementController::class, 'retry'])
+        ->middleware('throttle:5,1')
+        ->name('internal.notifications.retry');
 
     Route::get('/audit-logs', [AuditLogController::class, 'index'])
         ->name('internal.audit-logs.index');

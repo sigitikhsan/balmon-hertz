@@ -204,13 +204,11 @@
                             </td>
 
                             <td class="px-5 py-4 text-center">
-                                <button
-                                    type="button"
-                                    disabled
-                                    title="Fitur detail akan dibuat pada tahap berikutnya"
-                                    class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 bg-slate-50 cursor-not-allowed">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
+                                <a
+                                    href="{{ route('internal.applications.show', $application) }}"
+                                    class="inline-flex items-center justify-center px-3 py-2 rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100">
+                                    <i class="fa-solid fa-eye mr-2"></i>Detail
+                                </a>
                             </td>
 
                         </tr>

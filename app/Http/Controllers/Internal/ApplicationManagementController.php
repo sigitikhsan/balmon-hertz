@@ -4,7 +4,16 @@ namespace App\Http\Controllers\Internal;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\AuditLog;
+use App\Models\EmailLog;
+use App\Jobs\SendApplicationStatusEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\QueryException;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class ApplicationManagementController extends Controller
 {
@@ -47,5 +56,157 @@ class ApplicationManagementController extends Controller
             'search',
             'status'
         ));
+    }
+
+    public function show(Application $application)
+    {
+        $application->load('job.field');
+        $histories = $application->histories()
+            ->with('changer')
+            ->latest()
+            ->limit(20)
+            ->get();
+
+        return view('internal.applications.show', [
+            'application' => $application,
+            'histories' => $histories,
+            'allowedStatuses' => $this->allowedTransitions($application->status),
+        ]);
+    }
+
+    public function updateStatus(Request $request, Application $application)
+    {
+        $data = $request->validate([
+            'status' => ['required', Rule::in([
+                Application::STATUS_DITERIMA,
+                Application::STATUS_DITOLAK,
+                Application::STATUS_PERBAIKAN,
+            ])],
+            'note' => ['nullable', 'string', 'max:2000', 'required_if:status,ditolak,perlu_perbaikan'],
+        ]);
+
+        $emailLogId = DB::transaction(function () use ($data, $application, $request) {
+            $lockedApplication = Application::whereKey($application->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+            $oldStatus = $lockedApplication->status;
+
+            if (! in_array($data['status'], $this->allowedTransitions($oldStatus), true)) {
+                throw ValidationException::withMessages([
+                    'status' => 'Transisi status lamaran tersebut tidak diperbolehkan.',
+                ]);
+            }
+
+            $lockedApplication->status = $data['status'];
+            $lockedApplication->rejection_reason = $data['status'] === Application::STATUS_DITOLAK
+                ? $data['note']
+                : null;
+            $isFinalStatus = in_array($data['status'], [
+                Application::STATUS_DITERIMA,
+                Application::STATUS_DITOLAK,
+            ], true);
+            $lockedApplication->decided_at = $isFinalStatus ? now() : null;
+            $lockedApplication->decided_by = $isFinalStatus ? Auth::id() : null;
+            $lockedApplication->save();
+
+            $history = $lockedApplication->histories()->create([
+                'from_status' => $oldStatus,
+                'to_status' => $data['status'],
+                'note' => $data['note'] ?? null,
+                'changed_by' => Auth::id(),
+            ]);
+
+            $emailLog = EmailLog::create([
+                'application_id' => $lockedApplication->id,
+                'application_status_history_id' => $history->id,
+                'to_email' => $lockedApplication->email,
+                'channel' => 'email',
+                'subject' => 'Notifikasi status lamaran',
+                'body' => '',
+                'status' => 'pending',
+                'attempts' => 0,
+            ]);
+
+            AuditLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'application.status_updated',
+                'model_type' => Application::class,
+                'model_id' => $lockedApplication->id,
+                'old_values' => ['status' => $oldStatus],
+                'new_values' => ['status' => $data['status']],
+                'ip_address' => $request->ip(),
+            ]);
+
+            return $emailLog->id;
+        });
+
+        try {
+            SendApplicationStatusEmail::dispatch($emailLogId)->onConnection('database');
+        } catch (QueryException $exception) {
+            EmailLog::whereKey($emailLogId)->update([
+                'status' => 'failed',
+                'error_message' => 'Email gagal dimasukkan ke antrean pengiriman.',
+            ]);
+
+            return redirect()
+                ->route('internal.applications.show', $application)
+                ->with('warning', 'Status tersimpan, tetapi email gagal masuk antrean. Coba kirim ulang dari menu Notifikasi & Email.');
+        }
+
+        return redirect()
+            ->route('internal.applications.show', $application)
+            ->with('success', 'Status lamaran tersimpan dan email masuk antrean pengiriman.');
+    }
+
+    public function viewDocument(Application $application, string $document)
+    {
+        return $this->documentResponse($application, $document, false);
+    }
+
+    public function downloadDocument(Application $application, string $document)
+    {
+        return $this->documentResponse($application, $document, true);
+    }
+
+    private function documentResponse(Application $application, string $document, bool $download)
+    {
+        $paths = [
+            'cv' => $application->cv_path,
+            'surat' => $application->surat_path,
+        ];
+
+        abort_unless(array_key_exists($document, $paths), 404);
+
+        $path = $paths[$document];
+        abort_unless($path && Storage::disk('private')->exists($path), 404);
+
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $filename = $application->application_no . '-' . $document . '.' . $extension;
+        $headers = ['X-Content-Type-Options' => 'nosniff'];
+        $disk = Storage::disk('private');
+
+        return $download
+            ? $disk->download($path, $filename, $headers)
+            : $disk->response($path, $filename, $headers);
+    }
+
+    private function allowedTransitions(string $status): array
+    {
+        if ($status === Application::STATUS_MENUNGGU) {
+            return [
+                Application::STATUS_DITERIMA,
+                Application::STATUS_DITOLAK,
+                Application::STATUS_PERBAIKAN,
+            ];
+        }
+
+        if ($status === Application::STATUS_PERBAIKAN) {
+            return [
+                Application::STATUS_DITERIMA,
+                Application::STATUS_DITOLAK,
+            ];
+        }
+
+        return [];
     }
 }
