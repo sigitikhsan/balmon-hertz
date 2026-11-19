@@ -6,6 +6,11 @@
 
 @section('content')
 <div class="space-y-6">
+    @if (session('success'))
+        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700" role="status">
+            {{ session('success') }}
+        </div>
+    @endif
 
     {{-- Ringkasan --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
@@ -72,13 +77,20 @@
     <div class="bg-white rounded-xl shadow-sm border border-slate-200">
 
         <div class="p-5 border-b border-slate-200">
-            <div>
-                <h3 class="text-lg font-semibold text-slate-800">
-                    Daftar Bidang Magang
-                </h3>
-                <p class="text-sm text-slate-500 mt-1">
-                    Informasi bidang dan jumlah lowongan yang tersedia.
-                </p>
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-800">
+                        Daftar Bidang Magang
+                    </h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Informasi bidang dan jumlah lowongan yang tersedia.
+                    </p>
+                </div>
+                <a href="{{ route('internal.fields.create') }}"
+                   class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
+                    <i class="fa-solid fa-plus"></i>
+                    Tambah Bidang
+                </a>
             </div>
         </div>
 
@@ -140,10 +152,10 @@
                     <tr>
                         <th class="px-5 py-4 font-semibold">No.</th>
                         <th class="px-5 py-4 font-semibold">Nama Bidang</th>
-                        <th class="px-5 py-4 font-semibold">Slug</th>
                         <th class="px-5 py-4 font-semibold">Deskripsi</th>
                         <th class="px-5 py-4 font-semibold">Jumlah Lowongan</th>
                         <th class="px-5 py-4 font-semibold">Status</th>
+                        <th class="px-5 py-4 font-semibold">Aksi</th>
                     </tr>
                 </thead>
 
@@ -161,10 +173,6 @@
                                 <div class="font-semibold text-slate-800">
                                     {{ $field->name }}
                                 </div>
-                            </td>
-
-                            <td class="px-5 py-4 text-slate-500">
-                                {{ $field->slug }}
                             </td>
 
                             <td class="px-5 py-4 text-slate-600">
@@ -194,6 +202,22 @@
                                         Tidak Aktif
                                     </span>
                                 @endif
+                            </td>
+
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-3">
+                                    <a href="{{ route('internal.fields.edit', $field) }}"
+                                       class="font-medium text-blue-600 hover:text-blue-800">Ubah</a>
+                                    <form action="{{ route('internal.fields.status', $field) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="is_active" value="{{ $field->is_active ? 0 : 1 }}">
+                                        <button type="submit"
+                                                class="font-medium {{ $field->is_active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800' }}">
+                                            {{ $field->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
 
                         </tr>

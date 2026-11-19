@@ -61,19 +61,14 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <div>
-                <label for="title" class="block text-sm font-medium text-slate-700">Nama Lowongan</label>
-                <input id="title" name="title" type="text" maxlength="255" required
-                       value="{{ old('title', $isEditing ? $job->title : '') }}"
-                       class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2.5">
-            </div>
-            <div>
-                <label for="slug" class="block text-sm font-medium text-slate-700">Slug URL</label>
-                <input id="slug" name="slug" type="text" maxlength="255" pattern="[a-z0-9]+(-[a-z0-9]+)*" required
-                       value="{{ old('slug', $isEditing ? $job->slug : '') }}"
-                       class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2.5">
-            </div>
+        <div>
+            <label for="title" class="block text-sm font-medium text-slate-700">Nama Lowongan</label>
+            <input id="title" name="title" type="text" maxlength="255" required
+                   value="{{ old('title', $isEditing ? $job->title : '') }}"
+                   class="mt-1 w-full rounded-lg border border-slate-300 px-4 py-2.5">
+            <p class="mt-1 text-xs text-slate-500">
+                URL dibuat otomatis dari nama lowongan dan tetap sama jika nama diubah.
+            </p>
         </div>
 
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">

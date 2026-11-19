@@ -89,6 +89,10 @@ class ApplicationManagementTest extends TestCase
         ])->assertRedirect(route('internal.applications.show', $application));
 
         $this->assertSame(Application::STATUS_DITERIMA, $application->fresh()->status);
+        $this->assertSame(
+            Application::PARTICIPANT_STATUS_BELUM_MULAI,
+            $application->fresh()->participant_status
+        );
         $this->assertEquals($admin->id, $application->fresh()->decided_by);
         $this->assertSame(2, $application->histories()->count());
         $this->assertSame(2, AuditLog::where('model_id', $application->id)->count());

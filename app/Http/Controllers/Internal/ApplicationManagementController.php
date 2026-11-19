@@ -145,6 +145,9 @@ class ApplicationManagementController extends Controller
             }
 
             $lockedApplication->status = $data['status'];
+            if ($data['status'] === Application::STATUS_DITERIMA) {
+                $lockedApplication->participant_status = Application::PARTICIPANT_STATUS_BELUM_MULAI;
+            }
             $lockedApplication->rejection_reason = $data['status'] === Application::STATUS_DITOLAK
                 ? $data['note']
                 : null;
@@ -174,13 +177,18 @@ class ApplicationManagementController extends Controller
                 'attempts' => 0,
             ]);
 
+            $auditNewValues = ['status' => $data['status']];
+            if ($data['status'] === Application::STATUS_DITERIMA) {
+                $auditNewValues['participant_status'] = $lockedApplication->participant_status;
+            }
+
             AuditLog::create([
                 'user_id' => Auth::id(),
                 'action' => 'application.status_updated',
                 'model_type' => Application::class,
                 'model_id' => $lockedApplication->id,
                 'old_values' => ['status' => $oldStatus],
-                'new_values' => ['status' => $data['status']],
+                'new_values' => $auditNewValues,
                 'ip_address' => $request->ip(),
             ]);
 

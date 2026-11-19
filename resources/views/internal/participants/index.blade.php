@@ -6,6 +6,20 @@
 
 @section('content')
 <div class="space-y-6">
+    @if (session('success'))
+        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700" role="status">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700" role="alert">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     {{-- Ringkasan --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -90,6 +104,8 @@
                         <th class="px-5 py-4 font-semibold">Bidang</th>
                         <th class="px-5 py-4 font-semibold">Periode</th>
                         <th class="px-5 py-4 font-semibold">Tanggal Diterima</th>
+                        <th class="px-5 py-4 font-semibold">Status PKL</th>
+                        <th class="px-5 py-4 font-semibold">Aksi</th>
                     </tr>
                 </thead>
 
@@ -139,12 +155,50 @@
                                     : '-' }}
                             </td>
 
+                            <td class="px-5 py-4">
+                                @if ($participant->participant_status === \App\Models\Application::PARTICIPANT_STATUS_BELUM_MULAI)
+                                    <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">Belum Mulai</span>
+                                @elseif ($participant->participant_status === \App\Models\Application::PARTICIPANT_STATUS_SEDANG_BERLANGSUNG)
+                                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">Sedang Berlangsung</span>
+                                @elseif ($participant->participant_status === \App\Models\Application::PARTICIPANT_STATUS_SELESAI)
+                                    <span class="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">Selesai</span>
+                                @else
+                                    <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700">Status Belum Disetel</span>
+                                @endif
+                            </td>
+
+                            <td class="px-5 py-4">
+                                @if ($participant->participant_status === \App\Models\Application::PARTICIPANT_STATUS_BELUM_MULAI)
+                                    <form action="{{ route('internal.participants.status', $participant) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="participant_status" value="sedang_berlangsung">
+                                        <button type="submit" class="font-medium text-blue-600 hover:text-blue-800">
+                                            Mulai PKL
+                                        </button>
+                                    </form>
+                                @elseif ($participant->participant_status === \App\Models\Application::PARTICIPANT_STATUS_SEDANG_BERLANGSUNG)
+                                    <form action="{{ route('internal.participants.status', $participant) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="participant_status" value="selesai">
+                                        <button type="submit" class="font-medium text-green-600 hover:text-green-800">
+                                            Tandai Selesai
+                                        </button>
+                                    </form>
+                                @elseif ($participant->participant_status === \App\Models\Application::PARTICIPANT_STATUS_SELESAI)
+                                    <span class="text-slate-400">-</span>
+                                @else
+                                    <span class="text-slate-400">-</span>
+                                @endif
+                            </td>
+
                         </tr>
 
                     @empty
 
                         <tr>
-                            <td colspan="7" class="px-5 py-12 text-center">
+                            <td colspan="9" class="px-5 py-12 text-center">
                                 <div class="flex flex-col items-center">
 
                                     <div class="w-14 h-14 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-3">

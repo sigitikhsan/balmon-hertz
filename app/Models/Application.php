@@ -13,6 +13,9 @@ class Application extends Model
     public const STATUS_DITERIMA = 'diterima';
     public const STATUS_DITOLAK = 'ditolak';
     public const STATUS_PERBAIKAN = 'perlu_perbaikan';
+    public const PARTICIPANT_STATUS_BELUM_MULAI = 'belum_mulai';
+    public const PARTICIPANT_STATUS_SEDANG_BERLANGSUNG = 'sedang_berlangsung';
+    public const PARTICIPANT_STATUS_SELESAI = 'selesai';
 
     protected $fillable = [
         'application_no',
@@ -25,6 +28,7 @@ class Application extends Model
         'cv_path',
         'surat_path',
         'status',
+        'participant_status',
         'rejection_reason',
         'submitted_at',
         'decided_at',

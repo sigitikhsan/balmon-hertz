@@ -73,7 +73,6 @@ class JobQuotaManagementTest extends TestCase
             'period_id' => $period->id,
             'field_id' => $field->id,
             'title' => 'Asisten Monitoring',
-            'slug' => 'asisten-monitoring',
             'type' => 'WFO',
             'duration' => '3 Bulan',
             'quota' => 3,
@@ -95,13 +94,15 @@ class JobQuotaManagementTest extends TestCase
         $this->get(route('internal.jobs.create'))
             ->assertOk()
             ->assertSee('Kuota Lowongan')
-            ->assertSee('Pilih status');
+            ->assertSee('Pilih status')
+            ->assertDontSee('name="slug"', false);
 
         $this->post(route('internal.jobs.store'), $this->jobData($period, $field, [
             'status' => 'open',
         ]))->assertRedirect(route('internal.jobs.index'));
 
         $job = Job::firstOrFail();
+        $this->assertSame('asisten-monitoring', $job->slug);
         $this->assertSame('open', $job->status);
         $this->assertNotNull($job->published_at);
         $this->assertDatabaseHas('audit_logs', [
@@ -119,6 +120,7 @@ class JobQuotaManagementTest extends TestCase
 
         $job->refresh();
         $this->assertSame('Asisten Monitoring Senior', $job->title);
+        $this->assertSame('asisten-monitoring', $job->slug);
         $this->assertEquals(4, $job->quota);
         $this->assertSame('closed', $job->status);
         $this->assertNotNull($job->published_at);
@@ -144,7 +146,7 @@ class JobQuotaManagementTest extends TestCase
         $this->actingAs($admin);
 
         $this->post(route('internal.jobs.store'), $this->jobData($period, $field, [
-            'slug' => 'over-allocation',
+            'title' => 'Over Allocation',
             'quota' => 2,
         ]))->assertSessionHasErrors('quota');
 
@@ -182,11 +184,29 @@ class JobQuotaManagementTest extends TestCase
         $this->actingAs($admin);
 
         $this->put(route('internal.jobs.update', $job), $this->jobData($period, $field, [
-            'slug' => $job->slug,
+            'title' => 'Accepted Job Renamed',
             'quota' => 0,
         ]))->assertSessionHasErrors('quota');
 
         $this->assertEquals(3, $job->fresh()->quota);
+    }
+
+    public function test_duplicate_job_names_receive_unique_url_slugs()
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $period = $this->createPeriod(10);
+        $field = $this->createField();
+        $this->actingAs($admin);
+
+        $this->post(route('internal.jobs.store'), $this->jobData($period, $field))
+            ->assertRedirect(route('internal.jobs.index'));
+        $this->post(route('internal.jobs.store'), $this->jobData($period, $field))
+            ->assertRedirect(route('internal.jobs.index'));
+
+        $this->assertSame(
+            ['asisten-monitoring', 'asisten-monitoring-2'],
+            Job::orderBy('id')->pluck('slug')->all()
+        );
     }
 
     public function test_application_cannot_be_accepted_after_job_quota_is_full()

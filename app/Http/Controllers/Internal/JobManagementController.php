@@ -11,6 +11,7 @@ use App\Models\Period;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -58,6 +59,7 @@ class JobManagementController extends Controller
                 ->firstOrFail();
 
             $this->ensurePeriodQuota($period, (int) $data['quota']);
+            $data['slug'] = $this->uniqueJobSlug($data['title']);
             $data['published_at'] = $data['status'] === 'open' ? now() : null;
             $job = Job::create($data);
 
@@ -89,7 +91,7 @@ class JobManagementController extends Controller
 
     public function update(Request $request, Job $job)
     {
-        $data = $this->validatedJob($request, $job);
+        $data = $this->validatedJob($request);
 
         DB::transaction(function () use ($data, $job, $request) {
             $periodIds = collect([$job->period_id, (int) $data['period_id']])
@@ -155,18 +157,12 @@ class JobManagementController extends Controller
             ->with('success', 'Lowongan berhasil diperbarui.');
     }
 
-    private function validatedJob(Request $request, ?Job $job = null): array
+    private function validatedJob(Request $request): array
     {
-        $slugRule = Rule::unique('jobs', 'slug');
-        if ($job) {
-            $slugRule->ignore($job->id);
-        }
-
-        $data = $request->validate([
+        return $request->validate([
             'period_id' => ['required', 'integer', 'exists:periods,id'],
             'field_id' => ['required', 'integer', 'exists:fields,id'],
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'max:255', $slugRule],
             'type' => ['required', 'string', 'max:20'],
             'duration' => ['required', 'string', 'max:50'],
             'quota' => ['required', 'integer', 'min:0', 'max:4294967295'],
@@ -176,8 +172,20 @@ class JobManagementController extends Controller
             'jurusan' => ['nullable', 'string'],
             'status' => ['required', Rule::in(['draft', 'open', 'closed'])],
         ]);
+    }
 
-        return $data;
+    private function uniqueJobSlug(string $title): string
+    {
+        $baseSlug = Str::slug($title) ?: 'lowongan';
+        $suffix = 1;
+
+        do {
+            $suffixText = $suffix === 1 ? '' : '-' . $suffix;
+            $slug = rtrim(substr($baseSlug, 0, 255 - strlen($suffixText)), '-') . $suffixText;
+            $suffix++;
+        } while (Job::where('slug', $slug)->exists());
+
+        return $slug;
     }
 
     private function ensurePeriodQuota(Period $period, int $quota, ?int $exceptJobId = null): void

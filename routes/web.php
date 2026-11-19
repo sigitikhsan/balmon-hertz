@@ -76,6 +76,8 @@ Route::middleware(['internal.auth'])->group(function () {
 
     Route::get('/participants', [ParticipantManagementController::class, 'index'])
         ->name('internal.participants.index');
+    Route::patch('/participants/{application}/status', [ParticipantManagementController::class, 'updateStatus'])
+        ->name('internal.participants.status');
 
     Route::get('/periods', [PeriodManagementController::class, 'index'])
         ->name('internal.periods.index');
@@ -103,6 +105,16 @@ Route::middleware(['internal.auth'])->group(function () {
 
     Route::get('/fields', [FieldManagementController::class, 'index'])
         ->name('internal.fields.index');
+    Route::get('/fields/create', [FieldManagementController::class, 'create'])
+        ->name('internal.fields.create');
+    Route::post('/fields', [FieldManagementController::class, 'store'])
+        ->name('internal.fields.store');
+    Route::get('/fields/{field}/edit', [FieldManagementController::class, 'edit'])
+        ->name('internal.fields.edit');
+    Route::put('/fields/{field}', [FieldManagementController::class, 'update'])
+        ->name('internal.fields.update');
+    Route::patch('/fields/{field}/status', [FieldManagementController::class, 'updateStatus'])
+        ->name('internal.fields.status');
 
     Route::get('/verifications', [AdminWorkspaceController::class, 'verifications'])
         ->name('internal.verifications.index');
