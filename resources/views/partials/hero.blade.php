@@ -8,8 +8,8 @@
         <div class="absolute inset-y-0 right-0 w-1/2 opacity-40" style="background: linear-gradient(115deg, transparent 0%, transparent 35%, rgba(255,255,255,0.7) 45%, transparent 55%, rgba(255,255,255,0.5) 65%, transparent 75%);"></div>
         <div class="absolute -right-20 top-0 w-[40rem] h-[40rem] rotate-12 opacity-30" style="background: linear-gradient(135deg, rgba(18,101,237,0.12) 0%, transparent 45%, rgba(255,255,255,0.6) 50%, transparent 55%);"></div>
         <!-- abstract shapes -->
-        <div class="absolute top-24 right-[42%] w-24 h-24 border border-[#1265ED]/10 rounded-3xl rotate-12"></div>
-        <div class="absolute bottom-32 left-[8%] w-16 h-16 bg-[#1265ED]/[0.06] rounded-2xl rotate-6"></div>
+
+
         <div class="absolute top-40 left-[45%] w-3 h-3 bg-[#1265ED]/30 rounded-full"></div>
         <div class="absolute top-52 left-[48%] w-2 h-2 bg-[#1265ED]/20 rounded-full"></div>
         <!-- subtle dot pattern -->
