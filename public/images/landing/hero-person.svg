@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 560" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="120" y1="40" x2="620" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EAF3FF"/>
+      <stop offset="1" stop-color="#DCEBFF"/>
+    </linearGradient>
+    <linearGradient id="bld" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9FC1FF" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#9FC1FF" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="360" y1="220" x2="430" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A4FA0"/>
+      <stop offset="1" stop-color="#08245C"/>
+    </linearGradient>
+    <linearGradient id="laptop" x1="300" y1="330" x2="420" y2="390" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FBFF"/>
+      <stop offset="1" stop-color="#D7E7FF"/>
+    </linearGradient>
+  </defs>
+  <!-- background shapes -->
+  <ellipse cx="420" cy="470" rx="250" ry="38" fill="#1265ED" fill-opacity="0.08"/>
+  <circle cx="560" cy="120" r="90" fill="#1265ED" fill-opacity="0.07"/>
+  <circle cx="170" cy="160" r="55" fill="#1265ED" fill-opacity="0.05"/>
+  <path d="M520 0L720 0L720 280L450 150Z" fill="#1265ED" fill-opacity="0.06"/>
+  <path d="M560 40L720 40L720 220L500 120Z" fill="#1265ED" fill-opacity="0.05"/>
+
+  <!-- office buildings -->
+  <g opacity="0.95">
+    <rect x="88" y="120" width="110" height="300" rx="8" fill="url(#bld)"/>
+    <rect x="214" y="80" width="90" height="340" rx="8" fill="url(#bld)"/>
+    <rect x="520" y="100" width="120" height="320" rx="8" fill="url(#bld)"/>
+    <rect x="470" y="160" width="40" height="260" rx="6" fill="url(#bld)"/>
+    <!-- windows -->
+    <g fill="#FFFFFF" fill-opacity="0.55">
+      <rect x="104" y="142" width="14" height="14" rx="2"/><rect x="126" y="142" width="14" height="14" rx="2"/><rect x="148" y="142" width="14" height="14" rx="2"/><rect x="170" y="142" width="14" height="14" rx="2"/>
+      <rect x="104" y="168" width="14" height="14" rx="2"/><rect x="126" y="168" width="14" height="14" rx="2"/><rect x="148" y="168" width="14" height="14" rx="2"/><rect x="170" y="168" width="14" height="14" rx="2"/>
+      <rect x="104" y="194" width="14" height="14" rx="2"/><rect x="126" y="194" width="14" height="14" rx="2"/><rect x="148" y="194" width="14" height="14" rx="2"/><rect x="170" y="194" width="14" height="14" rx="2"/>
+      <rect x="104" y="220" width="14" height="14" rx="2"/><rect x="126" y="220" width="14" height="14" rx="2"/><rect x="148" y="220" width="14" height="14" rx="2"/><rect x="170" y="220" width="14" height="14" rx="2"/>
+      <rect x="230" y="102" width="12" height="12" rx="2"/><rect x="250" y="102" width="12" height="12" rx="2"/><rect x="270" y="102" width="12" height="12" rx="2"/>
+      <rect x="230" y="124" width="12" height="12" rx="2"/><rect x="250" y="124" width="12" height="12" rx="2"/><rect x="270" y="124" width="12" height="12" rx="2"/>
+      <rect x="230" y="146" width="12" height="12" rx="2"/><rect x="250" y="146" width="12" height="12" rx="2"/><rect x="270" y="146" width="12" height="12" rx="2"/>
+      <rect x="230" y="168" width="12" height="12" rx="2"/><rect x="250" y="168" width="12" height="12" rx="2"/><rect x="270" y="168" width="12" height="12" rx="2"/>
+      <rect x="536" y="122" width="14" height="14" rx="2"/><rect x="558" y="122" width="14" height="14" rx="2"/><rect x="580" y="122" width="14" height="14" rx="2"/><rect x="602" y="122" width="14" height="14" rx="2"/>
+      <rect x="536" y="148" width="14" height="14" rx="2"/><rect x="558" y="148" width="14" height="14" rx="2"/><rect x="580" y="148" width="14" height="14" rx="2"/><rect x="602" y="148" width="14" height="14" rx="2"/>
+      <rect x="536" y="174" width="14" height="14" rx="2"/><rect x="558" y="174" width="14" height="14" rx="2"/><rect x="580" y="174" width="14" height="14" rx="2"/><rect x="602" y="174" width="14" height="14" rx="2"/>
+      <rect x="536" y="200" width="14" height="14" rx="2"/><rect x="558" y="200" width="14" height="14" rx="2"/><rect x="580" y="200" width="14" height="14" rx="2"/><rect x="602" y="200" width="14" height="14" rx="2"/>
+    </g>
+  </g>
+
+  <!-- person -->
+  <!-- backpack -->
+  <path d="M395 250C395 225 410 210 435 210C460 210 475 225 475 250V340C475 355 465 365 450 365H420C405 365 395 355 395 340V250Z" fill="#0B2F6B"/>
+  <path d="M412 215C412 200 421 192 435 192C449 192 458 200 458 215" stroke="#0B2F6B" stroke-width="8" stroke-linecap="round"/>
+  <rect x="418" y="290" width="34" height="30" rx="8" fill="#1265ED" fill-opacity="0.35"/>
+
+  <!-- legs -->
+  <path d="M360 390L340 470C337 478 341 486 350 488C358 490 366 485 368 477L392 410Z" fill="#1F2937"/>
+  <path d="M410 395L418 472C419 480 425 486 433 486C442 486 448 479 447 470L438 402Z" fill="#111827"/>
+  <path d="M322 468L360 468L366 482C368 487 365 492 360 492H320C314 492 311 486 314 481L322 468Z" fill="#0F172A"/>
+  <path d="M404 468L442 468L448 482C450 487 447 492 442 492H402C396 492 393 486 396 481L404 468Z" fill="#0F172A"/>
+
+  <!-- torso/shirt -->
+  <path d="M332 270C332 245 350 228 378 224L398 220L420 220L440 224C468 228 486 245 486 270V360C486 385 468 400 442 400H376C350 400 332 385 332 360V270Z" fill="url(#shirt)"/>
+  <path d="M398 220L410 250L422 220" fill="#EAF3FF"/>
+  <path d="M410 250V400" stroke="#DCEBFF" stroke-opacity="0.25" stroke-width="2"/>
+  <path d="M350 285L332 320L345 330L362 295Z" fill="#0A3470"/>
+  <path d="M468 285L486 320L473 330L456 295Z" fill="#0A3470"/>
+
+  <!-- neck -->
+  <rect x="398" y="185" width="24" height="30" rx="10" fill="#F2C7A5"/>
+
+  <!-- head -->
+  <path d="M374 150C374 128 390 112 410 112C430 112 446 128 446 150V175C446 197 430 213 410 213C390 213 374 197 374 175V150Z" fill="#F2C7A5"/>
+  <path d="M372 152C372 126 388 106 412 106C436 106 452 124 450 150C444 146 434 144 424 145C414 140 402 139 390 142C382 144 376 148 372 152Z" fill="#1F2937"/>
+  <path d="M390 165C394 162 398 162 402 165" stroke="#334155" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M418 165C422 162 426 162 430 165" stroke="#334155" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M401 182C405 186 415 186 419 182" stroke="#B45309" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- arms -->
+  <path d="M345 295C330 305 320 322 318 340C316 352 322 360 332 360C342 360 350 352 354 342L372 310Z" fill="url(#shirt)"/>
+  <path d="M473 295C488 305 498 322 500 340C502 352 496 360 486 360C476 360 468 352 464 342L446 310Z" fill="url(#shirt)"/>
+  <path d="M318 352C308 356 302 364 304 372C306 380 314 384 324 380L342 372L336 355Z" fill="#F2C7A5"/>
+  <path d="M500 352C510 356 516 364 514 372C512 380 504 384 494 380L476 372L482 355Z" fill="#F2C7A5"/>
+
+  <!-- laptop -->
+  <path d="M300 360H430L448 390H282L300 360Z" fill="url(#laptop)" stroke="#BFDBFE" stroke-width="2"/>
+  <path d="M314 332H416C422 332 426 336 426 342V362H304V342C304 336 308 332 314 332Z" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="2"/>
+  <rect x="314" y="342" width="102" height="10" rx="2" fill="#DCEBFF"/>
+  <circle cx="365" cy="347" r="2" fill="#1265ED"/>
+  <path d="M282 390H448L454 398C456 402 453 406 448 406H282C277 406 274 402 276 398L282 390Z" fill="#CBD5E1"/>
+
+  <!-- bag strap detail -->
+  <path d="M455 245C470 270 478 300 478 330" stroke="#1265ED" stroke-opacity="0.25" stroke-width="6" stroke-linecap="round"/>
+</svg>

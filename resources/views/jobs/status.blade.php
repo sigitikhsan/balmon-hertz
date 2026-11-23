@@ -6,7 +6,7 @@
 
     @include('components.navbar')
 
-    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12">
         <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Cek Status Lamaran</h1>
         <p class="text-sm font-normal text-slate-600 leading-relaxed mt-1">Masukkan nomor lamaran atau email yang dipakai mendaftar.</p>
 

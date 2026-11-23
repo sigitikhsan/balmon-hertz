@@ -6,7 +6,7 @@
 
     @include('components.navbar')
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12">
         <div class="max-w-2xl mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">Lowongan Tersedia</h1>
             <p class="text-sm font-normal text-slate-600 leading-relaxed mt-1">Semua posisi magang dan PKL yang dibuka Balmon saat ini.</p>
@@ -84,12 +84,31 @@
         @endif
     </section>
 
-    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
-            <p>&copy; {{ date('Y') }} magang-hertz Balmon. Hak cipta dilindungi.</p>
-            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
-                <a href="{{ url('/') }}#beranda" class="hover:text-white transition">Beranda</a>
-                <a href="{{ url('/') }}#katalog" class="hover:text-white transition">Katalog</a>
+    <footer class="relative bg-[#08245C] text-white overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 leading-[0] pointer-events-none" aria-hidden="true">
+            <svg viewBox="0 0 1440 100" preserveAspectRatio="none" class="block w-full h-[56px] sm:h-[72px] lg:h-[90px]">
+                <path d="M0,40 C240,100 480,100 720,70 C960,40 1200,0 1440,20 L1440,0 L0,0 Z" fill="#F7FBFF"/>
+            </svg>
+        </div>
+        <div class="absolute bottom-0 right-0 w-72 h-72 pointer-events-none" aria-hidden="true">
+            <div class="absolute bottom-0 right-0 w-64 h-64 bg-[#1265ED]/15 rounded-tl-full"></div>
+            <div class="absolute bottom-0 right-0 w-40 h-40 bg-[#1265ED]/10 rounded-tl-full"></div>
+        </div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-10">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                    <a href="{{ url('/') }}#beranda" class="inline-flex items-center shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08245C] rounded-lg">
+                        <span class="inline-flex items-center justify-center bg-white rounded-xl px-3 py-2">
+                            <img src="{{ asset('storage/images/logo.jpeg') }}" alt="Logo magang-hertz" class="h-10 w-auto">
+                        </span>
+                    </a>
+                    <div class="hidden sm:block w-px h-10 bg-white/20" aria-hidden="true"></div>
+                    <p class="text-sm text-white/80">&copy; {{ date('Y') }} magang-hertz Balmon. Hak cipta dilindungi.</p>
+                </div>
+                <nav class="flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/85" aria-label="Navigasi footer">
+                    <a href="{{ url('/') }}#beranda" class="hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] rounded">Beranda</a>
+                    <a href="{{ url('/') }}#katalog" class="hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] rounded">Katalog</a>
+                </nav>
             </div>
         </div>
     </footer>

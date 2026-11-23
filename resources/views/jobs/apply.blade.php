@@ -6,7 +6,7 @@
 
     @include('components.navbar')
 
-    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12">
         <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Form Pendaftaran</h1>
         <p class="text-sm font-normal text-slate-600 leading-relaxed mt-1">Lengkapi data di bawah untuk melamar posisi ini.</p>
 

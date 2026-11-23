@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 520" fill="none">
+  <defs>
+    <linearGradient id="qg" x1="280" y1="40" x2="420" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1265ED"/>
+      <stop offset="1" stop-color="#08245C"/>
+    </linearGradient>
+    <linearGradient id="shirt2" x1="220" y1="260" x2="300" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A4FA0"/>
+      <stop offset="1" stop-color="#08245C"/>
+    </linearGradient>
+  </defs>
+  <!-- bg decor -->
+  <circle cx="430" cy="120" r="80" fill="#EAF3FF"/>
+  <circle cx="120" cy="380" r="60" fill="#EAF3FF"/>
+  <path d="M40 460C120 430 200 440 280 470C360 500 440 500 520 470" stroke="#DCEBFF" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- big question mark -->
+  <path d="M340 72C292 72 255 98 244 138C241 149 247 160 258 163C269 166 280 160 283 149C290 126 312 110 340 110C372 110 394 129 394 156C394 180 380 194 356 210C328 228 312 246 312 276V290C312 301 321 310 332 310C343 310 352 301 352 290V278C352 262 360 253 382 238C410 220 434 198 434 156C434 107 395 72 340 72Z" fill="url(#qg)"/>
+  <circle cx="332" cy="344" r="22" fill="url(#qg)"/>
+
+  <!-- chat bubbles -->
+  <g>
+    <rect x="72" y="90" width="120" height="64" rx="18" fill="#FFFFFF" stroke="#DCEBFF" stroke-width="2"/>
+    <path d="M112 154L126 172L140 154" fill="#FFFFFF" stroke="#DCEBFF" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M112 154H140" stroke="#FFFFFF" stroke-width="4"/>
+    <circle cx="108" cy="122" r="5" fill="#1265ED"/>
+    <circle cx="132" cy="122" r="5" fill="#1265ED" fill-opacity="0.55"/>
+    <circle cx="156" cy="122" r="5" fill="#1265ED" fill-opacity="0.3"/>
+  </g>
+  <g>
+    <rect x="430" y="250" width="90" height="52" rx="16" fill="#1265ED" fill-opacity="0.1" stroke="#BFDBFE"/>
+    <path d="M455 302L465 316L475 302" fill="#F3F8FF" stroke="#BFDBFE" stroke-linejoin="round"/>
+    <path d="M455 302H475" stroke="#F3F8FF" stroke-width="4"/>
+    <rect x="448" y="270" width="40" height="4" rx="2" fill="#1265ED" fill-opacity="0.5"/>
+    <rect x="448" y="280" width="28" height="4" rx="2" fill="#1265ED" fill-opacity="0.3"/>
+  </g>
+
+  <!-- plant -->
+  <g transform="translate(52,300)">
+    <path d="M40 120C20 120 10 105 14 88C24 92 32 100 36 112C38 96 48 82 66 78C72 98 64 112 46 120Z" fill="#34A853" fill-opacity="0.85"/>
+    <path d="M46 120C46 120 52 98 72 86C78 104 70 118 52 124Z" fill="#22C55E" fill-opacity="0.75"/>
+    <path d="M44 120V150" stroke="#16A34A" stroke-width="4" stroke-linecap="round"/>
+    <path d="M24 150H64L58 175H30L24 150Z" fill="#FFFFFF" stroke="#DCEBFF" stroke-width="2"/>
+  </g>
+
+  <!-- person sitting with laptop -->
+  <!-- chair/base -->
+  <ellipse cx="250" cy="455" rx="120" ry="18" fill="#1265ED" fill-opacity="0.08"/>
+  <!-- body -->
+  <path d="M205 385L185 440C182 448 186 455 194 456C201 457 208 453 210 446L232 392Z" fill="#1F2937"/>
+  <path d="M255 385L275 440C278 448 286 453 294 451C301 449 305 442 302 435L278 390Z" fill="#111827"/>
+  <path d="M210 300C210 275 228 258 255 255L275 252L295 255C322 258 340 275 340 300V360C340 385 322 398 296 398H254C228 398 210 385 210 360V300Z" fill="url(#shirt2)"/>
+  <rect x="263" y="228" width="24" height="28" rx="10" fill="#F2C7A5"/>
+  <path d="M242 200C242 178 258 162 278 162C298 162 314 178 314 200V222C314 244 298 260 278 260C258 260 242 244 242 222V200Z" fill="#F2C7A5"/>
+  <path d="M240 202C240 176 256 158 280 158C304 158 320 174 318 200C312 196 302 194 292 195C282 190 270 189 258 192C250 194 244 198 240 202Z" fill="#1F2937"/>
+  <path d="M230 320C215 330 206 344 206 358C206 368 212 374 221 374C230 374 238 368 242 358L258 330Z" fill="url(#shirt2)"/>
+  <path d="M320 320C335 330 344 344 344 358C344 368 338 374 329 374C320 374 312 368 308 358L292 330Z" fill="url(#shirt2)"/>
+  <!-- laptop on lap -->
+  <path d="M200 360H350L362 388H188L200 360Z" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="2"/>
+  <path d="M212 334H338C344 334 348 338 348 344V362H202V344C202 338 206 334 212 334Z" fill="#F8FBFF" stroke="#BFDBFE" stroke-width="2"/>
+  <rect x="214" y="344" width="122" height="8" rx="2" fill="#DCEBFF"/>
+  <path d="M188 388H362L366 396C368 400 365 404 360 404H190C185 404 182 400 184 396L188 388Z" fill="#CBD5E1"/>
+  <!-- hands -->
+  <ellipse cx="235" cy="358" rx="10" ry="7" fill="#F2C7A5"/>
+  <ellipse cx="315" cy="358" rx="10" ry="7" fill="#F2C7A5"/>
+</svg>

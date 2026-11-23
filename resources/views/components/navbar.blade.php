@@ -1,35 +1,51 @@
-<header class="bg-[#f7f7f7] border-b border-slate-200 sticky top-0 z-50 anim-rise">
+<header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5">
 @php($navBase = request()->is('/') ? '' : url('/'))
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <a href="{{ $navBase }}#beranda" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="magang-hertz - Beranda">
-            <img src="{{ asset('storage/images/logo.jpeg') }}" alt="Logo magang-hertz" class="h-14 w-auto">
-        </a>
-        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600" aria-label="Navigasi utama">
-            <a href="{{ $navBase }}#beranda" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="Beranda"><span class="block h-6 leading-6 overflow-hidden"><span class="block transition-transform duration-300 group-hover:-translate-y-6">Beranda</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">Beranda</span></span></a>
-            <a href="{{ $navBase }}#katalog" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="Katalog"><span class="block h-6 leading-6 overflow-hidden"><span class="block transition-transform duration-300 group-hover:-translate-y-6">Katalog</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">Katalog</span></span></a>
-            <a href="{{ route('jobs.index') }}" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="Lowongan"><span class="block h-6 leading-6 overflow-hidden"><span class="block transition-transform duration-300 group-hover:-translate-y-6">Lowongan</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">Lowongan</span></span></a>
-            <a href="{{ $navBase }}#keunggulan" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="Keunggulan"><span class="block h-6 leading-6 overflow-hidden"><span class="block transition-transform duration-300 group-hover:-translate-y-6">Keunggulan</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">Keunggulan</span></span></a>
-            <a href="{{ $navBase }}#alur" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="Alur"><span class="block h-6 leading-6 overflow-hidden"><span class="block transition-transform duration-300 group-hover:-translate-y-6">Alur</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">Alur</span></span></a>
-            <a href="{{ $navBase }}#faq" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="FAQ"><span class="block h-6 leading-6 overflow-hidden"><span class="block transition-transform duration-300 group-hover:-translate-y-6">FAQ</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">FAQ</span></span></a>
-            <a href="{{ route('status.form') }}" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="Cek Status"><span class="block h-6 leading-6 overflow-hidden"><span class="block transition-transform duration-300 group-hover:-translate-y-6">Cek Status</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">Cek Status</span></span></a>
-        </nav>
-        <div class="flex items-center space-x-3">
-            <a href="https://wa.me/6288213414826" target="_blank" rel="noopener" class="group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded" aria-label="Hubungi Kami via WhatsApp"><span class="block h-6 leading-6 overflow-hidden text-sm font-medium"><span class="block transition-transform duration-300 group-hover:-translate-y-6">Hubungi Kami</span><span class="block transition-transform duration-300 group-hover:-translate-y-6 text-blue-600" aria-hidden="true">Hubungi Kami</span></span></a>
-            <button type="button" id="nav-toggle" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2" aria-expanded="false" aria-controls="nav-mobile" aria-label="Buka menu navigasi">
-                <svg id="nav-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                <svg id="nav-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
+@php($isJobs = request()->routeIs('jobs.*') || request()->routeIs('apply.*'))
+@php($isStatus = request()->routeIs('status.*'))
+    <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-between gap-4 h-[72px] px-5 sm:px-7 rounded-full bg-white/85 backdrop-blur-xl border border-white/70 shadow-[0_10px_30px_rgba(8,36,92,0.08)]">
+            <a href="{{ $navBase }}#beranda" class="shrink-0 inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] focus-visible:ring-offset-2 rounded-lg" aria-label="magang-hertz - Beranda">
+                <img src="{{ asset('storage/images/logo.jpeg') }}" alt="Logo magang-hertz" class="h-11 sm:h-12 w-auto">
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-1 text-[15px] font-medium text-[#08245C]" aria-label="Navigasi utama">
+                <a href="{{ $navBase }}#beranda" class="px-3 py-2 rounded-lg hover:text-[#1265ED] hover:bg-[#EAF3FF]/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Beranda</a>
+                <a href="{{ $navBase }}#katalog" class="px-3 py-2 rounded-lg hover:text-[#1265ED] hover:bg-[#EAF3FF]/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Katalog</a>
+                <a href="{{ route('jobs.index') }}" class="px-3 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] {{ $isJobs ? 'text-[#1265ED] bg-[#EAF3FF] font-semibold' : 'hover:text-[#1265ED] hover:bg-[#EAF3FF]/70' }}">Lowongan</a>
+                <a href="{{ $navBase }}#keunggulan" class="px-3 py-2 rounded-lg hover:text-[#1265ED] hover:bg-[#EAF3FF]/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Keunggulan</a>
+                <a href="{{ $navBase }}#alur" class="px-3 py-2 rounded-lg hover:text-[#1265ED] hover:bg-[#EAF3FF]/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Alur</a>
+                <a href="{{ $navBase }}#faq" class="px-3 py-2 rounded-lg hover:text-[#1265ED] hover:bg-[#EAF3FF]/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">FAQ</a>
+                <a href="{{ route('status.form') }}" class="px-3 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] {{ $isStatus ? 'text-[#1265ED] bg-[#EAF3FF] font-semibold' : 'hover:text-[#1265ED] hover:bg-[#EAF3FF]/70' }}">Cek Status</a>
+            </nav>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="https://wa.me/6288213414826" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center justify-center min-h-[44px] px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-[#1265ED] hover:bg-[#0f56cc] shadow-[0_8px_20px_rgba(18,101,237,0.25)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] focus-visible:ring-offset-2" aria-label="Hubungi Kami via WhatsApp">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                    Hubungi Kami
+                </a>
+                <button type="button" id="nav-toggle" class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-[#DCEBFF] text-[#08245C] bg-white hover:bg-[#F7FAFF] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] focus-visible:ring-offset-2" aria-expanded="false" aria-controls="nav-mobile" aria-label="Buka menu navigasi">
+                    <svg id="nav-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    <svg id="nav-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
         </div>
+
+        <nav id="nav-mobile" class="hidden lg:hidden mt-3 rounded-2xl border border-[#DCEBFF] bg-white/95 backdrop-blur-xl px-4 sm:px-6 py-4 shadow-[0_14px_30px_rgba(8,36,92,0.08)]" aria-label="Navigasi seluler">
+            <div class="space-y-1 text-sm font-medium text-[#08245C]">
+                <a href="{{ $navBase }}#beranda" class="block px-3 py-3 rounded-xl hover:bg-[#EAF3FF] hover:text-[#1265ED] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Beranda</a>
+                <a href="{{ $navBase }}#katalog" class="block px-3 py-3 rounded-xl hover:bg-[#EAF3FF] hover:text-[#1265ED] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Katalog</a>
+                <a href="{{ route('jobs.index') }}" class="block px-3 py-3 rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] {{ $isJobs ? 'bg-[#EAF3FF] text-[#1265ED] font-semibold' : 'hover:bg-[#EAF3FF] hover:text-[#1265ED]' }}">Lowongan</a>
+                <a href="{{ $navBase }}#keunggulan" class="block px-3 py-3 rounded-xl hover:bg-[#EAF3FF] hover:text-[#1265ED] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Keunggulan</a>
+                <a href="{{ $navBase }}#alur" class="block px-3 py-3 rounded-xl hover:bg-[#EAF3FF] hover:text-[#1265ED] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">Alur</a>
+                <a href="{{ $navBase }}#faq" class="block px-3 py-3 rounded-xl hover:bg-[#EAF3FF] hover:text-[#1265ED] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]">FAQ</a>
+                <a href="{{ route('status.form') }}" class="block px-3 py-3 rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] {{ $isStatus ? 'bg-[#EAF3FF] text-[#1265ED] font-semibold' : 'hover:bg-[#EAF3FF] hover:text-[#1265ED]' }}">Cek Status</a>
+                <a href="https://wa.me/6288213414826" target="_blank" rel="noopener" class="sm:hidden mt-2 flex items-center justify-center min-h-[44px] px-4 py-3 rounded-xl text-sm font-semibold text-white bg-[#1265ED] hover:bg-[#0f56cc] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED]" aria-label="Hubungi Kami via WhatsApp">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                    Hubungi Kami
+                </a>
+            </div>
+        </nav>
     </div>
-    <nav id="nav-mobile" class="hidden md:hidden border-t border-slate-200 bg-[#f7f7f7] px-4 py-3 space-y-1 text-sm font-medium text-slate-600" aria-label="Navigasi seluler">
-        <a href="{{ $navBase }}#beranda" class="block px-3 py-3 rounded-lg hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">Beranda</a>
-        <a href="{{ $navBase }}#katalog" class="block px-3 py-3 rounded-lg hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">Katalog</a>
-        <a href="{{ route('jobs.index') }}" class="block px-3 py-3 rounded-lg hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">Lowongan</a>
-        <a href="{{ $navBase }}#keunggulan" class="block px-3 py-3 rounded-lg hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">Keunggulan</a>
-        <a href="{{ $navBase }}#alur" class="block px-3 py-3 rounded-lg hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">Alur</a>
-        <a href="{{ $navBase }}#faq" class="block px-3 py-3 rounded-lg hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">FAQ</a>
-            <a href="{{ route('status.form') }}" class="block px-3 py-3 rounded-lg hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">Cek Status</a>
-    </nav>
 </header>
 <script>
 (function () {
@@ -46,22 +62,8 @@
         toggle.setAttribute('aria-label', open ? 'Tutup menu navigasi' : 'Buka menu navigasi');
     }
     var isOpen = false;
-    toggle.addEventListener('click', function () {
-        isOpen = !isOpen;
-        setOpen(isOpen);
-    });
-    menu.addEventListener('click', function (e) {
-        if (e.target.closest('a')) {
-            isOpen = false;
-            setOpen(false);
-        }
-    });
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && isOpen) {
-            isOpen = false;
-            setOpen(false);
-            toggle.focus();
-        }
-    });
+    toggle.addEventListener('click', function () { isOpen = !isOpen; setOpen(isOpen); });
+    menu.addEventListener('click', function (e) { if (e.target.closest('a')) { isOpen = false; setOpen(false); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen) { isOpen = false; setOpen(false); toggle.focus(); } });
 })();
 </script>
