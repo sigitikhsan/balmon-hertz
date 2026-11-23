@@ -14,13 +14,9 @@ class SuperAdminMiddleware
             return redirect('/akses-internal');
         }
 
-        $role = strtolower(Auth::user()->role ?? '');
+        $user = Auth::user();
 
-        if (!in_array($role, [
-            'superadmin',
-            'super_admin',
-            'super-admin'
-        ])) {
+        if (! $user->isSuperAdmin() || ! $user->isActive()) {
             abort(403, 'Anda tidak memiliki hak akses ke halaman ini.');
         }
 

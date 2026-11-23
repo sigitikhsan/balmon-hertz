@@ -21,12 +21,11 @@
         </div>
 
         <div>
-            <button
-                type="button"
-                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+            <a href="{{ route('internal.admins.create') }}"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
                 <i class="fa-solid fa-plus"></i>
                 Tambah Admin
-            </button>
+            </a>
         </div>
 
     </div>
@@ -40,7 +39,7 @@
                     <p class="text-sm text-slate-500">Total Admin</p>
 
                     <h3 class="text-2xl font-bold text-slate-900 mt-2">
-                        {{ $admins->total() }}
+                        {{ $totalAdmins }}
                     </h3>
                 </div>
 
@@ -56,7 +55,7 @@
                     <p class="text-sm text-slate-500">Admin Aktif</p>
 
                     <h3 class="text-2xl font-bold text-green-600 mt-2">
-                        {{ \App\Models\User::where('role', 'admin')->where('status', 'aktif')->count() }}
+                        {{ $activeAdmins }}
                     </h3>
                 </div>
 
@@ -72,7 +71,7 @@
                     <p class="text-sm text-slate-500">Admin Nonaktif</p>
 
                     <h3 class="text-2xl font-bold text-red-600 mt-2">
-                        {{ \App\Models\User::where('role', 'admin')->where('status', '!=', 'aktif')->count() }}
+                        {{ $inactiveAdmins }}
                     </h3>
                 </div>
 
@@ -172,12 +171,38 @@
 
                             <td class="px-6 py-4 text-center">
 
-                                <button
-                                    type="button"
-                                    class="text-slate-400 cursor-not-allowed"
-                                    title="Fitur edit akan dibuat pada tahap berikutnya">
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                                </button>
+                                <div class="flex items-center justify-center gap-2">
+
+                                    <a href="{{ route('internal.admins.edit', $admin) }}"
+                                       class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        Ubah
+                                    </a>
+
+                                    @if ((int) $admin->id === (int) auth()->id())
+
+                                        <span class="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-400 cursor-not-allowed"
+                                              title="Anda tidak dapat menonaktifkan akun sendiri.">
+                                            {{ $admin->status === 'aktif' ? 'Nonaktifkan' : 'Aktifkan' }}
+                                        </span>
+
+                                    @else
+
+                                        <form action="{{ route('internal.admins.status', $admin) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status"
+                                                   value="{{ $admin->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
+                                            <button type="submit"
+                                                    class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium {{ $admin->status === 'aktif' ? 'text-red-600 hover:bg-red-50' : 'text-green-600 hover:bg-green-50' }}">
+                                                <i class="fa-solid {{ $admin->status === 'aktif' ? 'fa-user-slash' : 'fa-user-check' }}"></i>
+                                                {{ $admin->status === 'aktif' ? 'Nonaktifkan' : 'Aktifkan' }}
+                                            </button>
+                                        </form>
+
+                                    @endif
+
+                                </div>
 
                             </td>
 

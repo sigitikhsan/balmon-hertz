@@ -25,6 +25,7 @@
                 <a href="#keunggulan" class="hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded">Keunggulan</a>
                 <a href="#alur" class="hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded">Alur</a>
                 <a href="#faq" class="hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded">FAQ</a>
+                <a href="{{ route('status.form') }}" class="hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded">Cek Status</a>
             </div>
         </div>
     </footer>

@@ -14,9 +14,15 @@ class InternalAccessMiddleware
         }
 
         $user = Auth::user();
-        if (!in_array($user->role, ['admin', 'superadmin'])) {
+
+        if (! $user->isAdmin()) {
             Auth::logout();
             return redirect('/akses-internal')->withErrors(['email' => 'Akses ditolak. Bukan admin.']);
+        }
+
+        if (! $user->isActive()) {
+            Auth::logout();
+            return redirect('/akses-internal')->withErrors(['email' => 'Akun Anda nonaktif. Hubungi super admin.']);
         }
 
         return $next($request);

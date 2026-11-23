@@ -11,30 +11,84 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_SUPERADMIN = 'superadmin';
+    public const ROLE_PESERTA = 'peserta';
+
+    public const STATUS_AKTIF = 'aktif';
+    public const STATUS_NONAKTIF = 'nonaktif';
+
+    public const PERMISSION_DASHBOARD = 'dashboard';
+    public const PERMISSION_MANAGE_ADMIN = 'manage-admin';
+    public const PERMISSION_MANAGE_ROLE = 'manage-role';
+    public const PERMISSION_SETTINGS = 'settings';
+    public const PERMISSION_VERIFY = 'verify';
+    public const PERMISSION_PLACEMENT = 'placement';
+    public const PERMISSION_REPORT = 'report';
+
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * All permissions available in the system.
      */
-    protected $fillable = [
-        'name', 'email', 'password', 'role', 'status',
+    public static $permissions = [
+        self::ROLE_ADMIN => [
+            self::PERMISSION_DASHBOARD,
+            self::PERMISSION_VERIFY,
+        ],
+        self::ROLE_SUPERADMIN => [
+            // Super admin has all permissions
+            self::PERMISSION_DASHBOARD,
+            self::PERMISSION_MANAGE_ADMIN,
+            self::PERMISSION_MANAGE_ROLE,
+            self::PERMISSION_SETTINGS,
+            self::PERMISSION_VERIFY,
+            self::PERMISSION_PLACEMENT,
+            self::PERMISSION_REPORT,
+        ],
+        self::ROLE_PESERTA => [
+            // Peserta can only view dashboard
+            self::PERMISSION_DASHBOARD,
+        ],
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Check if the user has a specific permission.
      *
-     * @var array
+     * @param  string  $permission
+     * @return bool
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    public function hasPermissionTo($permission)
+    {
+        $userRole = strtolower($this->role);
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+        // Super admin has all permissions
+        if ($userRole === self::ROLE_SUPERADMIN) {
+            return true;
+        }
+
+        // Check if the user's role has this permission
+        if (isset(self::$permissions[$userRole]) && in_array($permission, self::$permissions[$userRole], true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return strtolower($this->role) === self::ROLE_SUPERADMIN;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array(strtolower($this->role), [self::ROLE_ADMIN, self::ROLE_SUPERADMIN], true);
+    }
+
+    public function isActive(): bool
+    {
+        return strtolower($this->status) === self::STATUS_AKTIF;
+    }
+
+    public $fillable = ['name','email','password','role','status'];
+    protected $hidden = ['password','remember_token'];
+    protected $casts = ['email_verified_at' => 'datetime'];
 }

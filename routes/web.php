@@ -140,6 +140,11 @@ Route::middleware(['internal.auth'])->group(function () {
     // Khusus Super Admin
     Route::middleware(['superadmin'])->group(function () {
         Route::get('/admins', [AdminManagementController::class, 'index'])->name('internal.admins.index');
+        Route::get('/admins/create', [AdminManagementController::class, 'create'])->name('internal.admins.create');
+        Route::post('/admins', [AdminManagementController::class, 'store'])->name('internal.admins.store');
+        Route::get('/admins/{admin}/edit', [AdminManagementController::class, 'edit'])->name('internal.admins.edit');
+        Route::put('/admins/{admin}', [AdminManagementController::class, 'update'])->name('internal.admins.update');
+        Route::patch('/admins/{admin}/status', [AdminManagementController::class, 'updateStatus'])->name('internal.admins.status');
 
         Route::get('/roles', [RoleManagementController::class, 'index'])->name('internal.roles.index');
 

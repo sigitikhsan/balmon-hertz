@@ -1,61 +1,77 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
+<h1 align="center">Balmon Hertz - Sistem Magang</h1>
+
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+<strong>Sistem pendaftaran dan pelaksanaan magang bagi institur Balmon Hertz</strong>
 </p>
 
-## About Laravel
+<p align="center">
+<a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-10.x-FF2D20?logo=laravel&logoColor=white"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tentang Proyek
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aplikasi web berbasis Laravel untuk sistem pendaftaran magang (PKL) mahasiswa. Aplikasi ini memungkinkan peserta daftar lowongan magang, admin mengelola pendaftaran, serta superadmin mengelola seluruh sistem.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Fitur Utama
 
-## Learning Laravel
+### untuk Peserta (tanpa akun/login)
+- Buka landing page, lihat 4 lowongan terbaru
+- Filter lowongan per tipe, klik Lihat Selengkapnya (modal detail)
+- Daftar dengan form: nama, email, no HP, TTL, posisi, upload CV + surat lamaran (PDF/DOCX, maks 2MB)
+- Terima nomor lamaran (`MH-2026-XXXX`)
+- Cek status di `/status` pakai nomor lamaran atau email: menunggu / diterima / ditolak / perlu perbaikan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### untuk Admin
+- Login `/akses-internal` (role `admin`, akun aktif)
+- Kelola periode + kuota, bidang magang (CRUD), lowongan (buka/tutup)
+- Lihat daftar lamaran (pagination), verifikasi status
+- Ubah status: diterima / ditolak (wajib alasan) / perlu perbaikan
+- Keputusan status membuat email dari template aktif dan masuk antrean pengiriman
+- Kelola penempilan + status PKL (sedang PKL, selesai)
+- Lihat laporan/rekap + audit log
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### untuk Superadmin
+- Semua hak admin, plus:
+- Kelola akun admin (tambah, edit, nonaktifkan)
+- Kelola role dan hak akses
+- Pengaturan sistem + template email
+- Audit log seluruh aktivitas admin
 
-## Laravel Sponsors
+## Instalasi
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. `composer install`
+2. `cp .env.example .env`
+3. `php artisan key:generate`
+4. `php artisan storage:link`
+5. Buat database `magang_hertz` di MySQL
+6. `php artisan migrate --seed`
+7. `php artisan queue:work database --queue=default`
+8. Akses `http://localhost` untuk landing page atau `http://localhost/akses-internal` untuk area admin
 
-### Premium Partners
+## Konfigurasi Penting
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+- **QUEUE_CONNECTION**: gunakan `database` di production, `sync` untuk development lokal
+- **MAIL_CONFIG**: isi `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS` untuk pengiriman email nyata
+- **Superadmin default**: email `superadmin@balmon.test`, password `password123`
+- **Admin default**: email `admin@balmon.test`, password `password123`
 
-## Contributing
+## Endpoint Penting
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `/` - Landing page lowongan terbaru
+- `/akses-internal` - Login halaman admin
+- `/akses-internal/dashboard` - Dashboard admin
+- `/akses-internal/admins` - Manajemen akun admin (superadmin only)
+- `/akses-internal/applications` - Daftar lamaran (admin)
+- `/status` - Cek status lamaran (publik, pakai nomor/email)
+- `/status/result` - Hasil cek status lamaran (publik)
 
-## Code of Conduct
+## Kontributor
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Dibangun oleh tim magang Balmon Hertz dengan framework Laravel.
 
-## Security Vulnerabilities
+## Lisensi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proyek ini bersifat internal untuk Balmon Hertz.

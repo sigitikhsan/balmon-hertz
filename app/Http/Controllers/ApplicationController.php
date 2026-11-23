@@ -23,11 +23,17 @@ class ApplicationController extends Controller
         $data = $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:applications,email',
-            'no_hp' => 'required|string|max:20',
+            'no_hp' => 'required|string|max:20|regex:/^[0-9]{10,15}$/',
             'ttl_tempat' => 'required|string|max:255',
             'ttl_tanggal' => 'required|date',
-            'cv' => 'required|file|mimes:pdf,docx|max:5120',
-            'surat' => 'required|file|mimes:pdf,docx|max:5120',
+            'cv' => 'required|file|mimes:pdf,docx|max:2048',
+            'surat' => 'required|file|mimes:pdf,docx|max:2048',
+        ], [
+            'no_hp.regex' => 'No HP hanya boleh berisi angka (10-15 digit).',
+            'cv.uploaded' => 'Berkas CV gagal diunggah. Pastikan ukuran maksimal 2MB lalu coba lagi.',
+            'surat.uploaded' => 'Berkas surat lamaran gagal diunggah. Pastikan ukuran maksimal 2MB lalu coba lagi.',
+            'cv.max' => 'Ukuran CV maksimal 2MB.',
+            'surat.max' => 'Ukuran surat lamaran maksimal 2MB.',
         ]);
 
         $cvPath = $request->file('cv')->store('lamaran/cv', 'private');

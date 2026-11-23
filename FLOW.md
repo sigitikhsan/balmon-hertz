@@ -6,7 +6,7 @@
 
 1. Buka landing page, lihat 4 lowongan terbaru.
 2. Buka `/jobs`, filter per tipe, klik Lihat Selengkapnya (modal detail).
-3. Klik Daftar, isi form: nama, email, no HP, TTL, posisi (autofill), upload CV + surat lamaran (PDF/DOCX, maks 5MB).
+3. Klik Daftar, isi form: nama, email, no HP, TTL, posisi (autofill), upload CV + surat lamaran (PDF/DOCX, maks 2MB).
 4. Terima nomor lamaran (`MH-2026-XXXX`). Aturan saat ini: 1 lamaran per email (bisa berubah).
 5. Cek status di `/status` pakai nomor lamaran atau email: menunggu / diterima / ditolak (+ alasan) / perlu perbaikan.
 6. Info diterima/ditolak/perlu perbaikan dikirim via email HRD setelah status tersimpan.

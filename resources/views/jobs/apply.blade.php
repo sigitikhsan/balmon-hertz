@@ -41,7 +41,7 @@
                 </div>
                 <div>
                     <label for="no_hp" class="block text-sm font-bold text-slate-900 mb-2">No HP</label>
-                    <input type="text" id="no_hp" name="no_hp" value="{{ old('no_hp') }}" required class="w-full min-h-[44px] px-4 rounded-lg bg-white border border-slate-200 text-sm font-normal text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                    <input type="text" id="no_hp" name="no_hp" value="{{ old('no_hp') }}" required inputmode="numeric" pattern="[0-9]{10,15}" title="Hanya angka 10-15 digit" class="w-full min-h-[44px] px-4 rounded-lg bg-white border border-slate-200 text-sm font-normal text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                 </div>
             </div>
 
@@ -57,12 +57,12 @@
             </div>
 
             <div>
-                <label for="cv" class="block text-sm font-bold text-slate-900 mb-2">Curriculum Vitae (PDF/DOCX, maks 5MB)</label>
+                <label for="cv" class="block text-sm font-bold text-slate-900 mb-2">Curriculum Vitae (PDF/DOCX, maks 2MB)</label>
                 <input type="file" id="cv" name="cv" accept=".pdf,.docx" required class="w-full min-h-[44px] px-4 py-2.5 rounded-lg bg-white border border-dashed border-slate-300 text-sm font-normal text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
             </div>
 
             <div>
-                <label for="surat" class="block text-sm font-bold text-slate-900 mb-2">Surat lamaran (PDF/DOCX, maks 5MB)</label>
+                <label for="surat" class="block text-sm font-bold text-slate-900 mb-2">Surat lamaran (PDF/DOCX, maks 2MB)</label>
                 <input type="file" id="surat" name="surat" accept=".pdf,.docx" required class="w-full min-h-[44px] px-4 py-2.5 rounded-lg bg-white border border-dashed border-slate-300 text-sm font-normal text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
             </div>
 

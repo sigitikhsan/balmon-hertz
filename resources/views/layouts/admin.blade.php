@@ -49,11 +49,17 @@
 
         $roleLabel = $isSuperAdmin ? 'Super Admin' : 'Admin';
 
-        $userInitial = strtoupper(substr($userName, 0, 1));
+$userInitial = strtoupper(substr($userName, 0, 1));
 
-        /*
-        |--------------------------------------------------------------------------
-        | Menu Super Admin
+$failedEmailCount = \App\Models\EmailLog::where('status','failed')->count();
+$pendingEmailCount = \App\Models\EmailLog::where('status','pending')->count();
+$waitingAppCount = \App\Models\Application::where('status', \App\Models\Application::STATUS_MENUNGGU)->count();
+$revisionAppCount = \App\Models\Application::where('status', \App\Models\Application::STATUS_PERBAIKAN)->count();
+$adminNotificationTotal = $failedEmailCount + $pendingEmailCount + $waitingAppCount + $revisionAppCount;
+
+/*
+|--------------------------------------------------------------------------
+| Menu Super Admin
         |--------------------------------------------------------------------------
         */
 
@@ -403,15 +409,36 @@
 
 
                     {{-- NOTIFICATION --}}
-                    <button type="button"
-                        class="navbar-notification"
-                        aria-label="Notifikasi">
+<div id="notificationWrapper" class="relative">
+    <button type="button"
+        id="notificationToggle"
+        class="navbar-notification"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="notificationPanel"
+        aria-label="Notifikasi, {{ $adminNotificationTotal }} item perlu perhatian">
 
-                        <i class="fa-regular fa-bell"></i>
+        <i class="fa-regular fa-bell"></i>
 
-                        <span class="notification-indicator"></span>
+        @if ($adminNotificationTotal > 0)
+            <span class="notification-badge" style="position:absolute; top:2px; right:2px; min-w-18; h-18; px-1; flex items-center justify-center rounded-full; bg-red-500 border-2 border-white text-white; text-[10px] font-bold leading-none">
+                {{ $adminNotificationTotal > 99 ? '99+' : $adminNotificationTotal }}
+            </span>
+        @endif
+    </button>
 
-                    </button>
+    <div id="notificationPanel"
+        style="display:none; position:absolute; right:0; top:calc(100% + 12px); width:360px; background:#fff; border:1px solid #e5eaf2; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,.1); z-index:1000; padding:12px;">
+        <div>
+            <strong>Notifikasi</strong>
+            <p>{{ $adminNotificationTotal }} item perlu perhatian</p>
+        </div>
+        <div style="margin-top:12px;">
+            <a href="{{ route('internal.notifications.index') }}" style="color:#0066cc;">Lihat semua email</a>
+            <a href="{{ route('internal.applications.index') }}" style="color:#0066cc;">Lihat pendaftaran</a>
+        </div>
+    </div>
+</div>
 
 
                     {{-- DIVIDER --}}
@@ -724,6 +751,21 @@
         });
     </script>
 
+
+    {{-- NOTIFICATION TOGGLE SCRIPT --}}
+    <script>
+        const notificationToggle = document.getElementById('notificationToggle');
+        const notificationPanel = document.getElementById('notificationPanel');
+        if (notificationToggle && notificationPanel) {
+            notificationToggle.addEventListener('click', function () {
+                if (notificationPanel.style.display === 'none') {
+                    notificationPanel.style.display = 'block';
+                } else {
+                    notificationPanel.style.display = 'none';
+                }
+            });
+        }
+    </script>
 
     {{-- PAGE SCRIPTS --}}
     @stack('scripts')

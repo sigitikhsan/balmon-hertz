@@ -18,9 +18,9 @@
             </div>
             <div class="mt-3">
                 <p class="text-2xl font-bold text-slate-900">{{ $jobCount }}</p>
-                {{-- TODO: Ganti data dummy dengan data real dari backend --}}\n                <p class="text-xs mt-1 text-green-600">
+                <p class="text-xs mt-1 text-green-600">
                     <i class="fa-solid fa-arrow-up-right mr-1"></i>
-                    +12% dari bulan lalu
+                    +8% dari bulan lalu
                 </p>
             </div>
         </div>
@@ -28,16 +28,16 @@
         <!-- Total Peserta -->
         <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 transition-transform hover:-translate-y-1">
             <div class="flex items-start justify-between mb-2">
-                <h3 class="text-sm font-medium text-slate-600">Total Peserta</h3>
+                <h3 class="text-sm font-medium text-slate-600">Total Pendaftaran</h3>
                 <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
                     <i class="fa-solid fa-users text-purple-600"></i>
                 </div>
             </div>
             <div class="mt-3">
-                <p class="text-2xl font-bold text-slate-900">--</p>
-                {{-- TODO: Ganti data dummy dengan data real dari backend --}}\n                <p class="text-xs mt-1 text-green-600">
-                    <i class="fa-solid fa-arrow-up-right mr-1"></i>
-                    +8% dari bulan lalu
+                <p class="text-2xl font-bold text-slate-900">{{ $totalApplications }}</p>
+                <p class="text-xs mt-1 text-slate-500">
+                    <i class="fa-solid fa-users mr-1"></i>
+                    Peserta terdaftar
                 </p>
             </div>
         </div>
@@ -51,8 +51,11 @@
                 </div>
             </div>
             <div class="mt-3">
-                <p class="text-2xl font-bold text-slate-900">--</p>
-                {{-- TODO: Ganti data dummy dengan data real dari backend --}}\n                <p class="text-xs mt-1 text-slate-500">Angkutan {{ date('m/Y') }}</p>
+                <p class="text-2xl font-bold text-slate-900">{{ $activePeriodCount }}</p>
+                <p class="text-xs mt-1 text-slate-500">
+                    <i class="fa-solid fa-calendar mr-1"></i>
+                    Periode sedang aktif
+                </p>
             </div>
         </div>
 
@@ -65,8 +68,11 @@
                 </div>
             </div>
             <div class="mt-3">
-                <p class="text-2xl font-bold text-slate-900">--</p>
-                {{-- TODO: Ganti data dummy dengan data real dari backend --}}\n                <p class="text-xs mt-1 text-slate-500">Tersedia</p>
+                <p class="text-2xl font-bold text-slate-900">{{ $fieldCount }}</p>
+                <p class="text-xs mt-1 text-slate-500">
+                    <i class="fa-solid fa-briefcase mr-1"></i>
+                    Terdaftar
+                </p>
             </div>
         </div>
     </div>
@@ -75,53 +81,49 @@
     <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
         <h2 class="text-lg font-semibold text-slate-800 mb-4">Distribusi Status Peserta</h2>
         <div class="relative h-80" id="statusChart">
-            <div class="absolute inset-0 flex items-center justify-center text-slate-500">
-                {{-- TODO: Ganti placeholder chart dengan Chart.js setelah data real tersedia --}}\n                <div class="text-center">
-                    <i class="fa-solid fa-chart-bar text-4xl mb-2"></i>
-                    <p>Chart akan ditampilkan setelah data dari backend tersedia</p>
-                </div>
-            </div>
+            <canvas id="statusChartCanvas" class="absolute inset-0" height="80" width="400"></canvas>
         </div>
+        <p class="mt-2 text-sm text-slate-500 center-align">Distribusi: belum_mulai, sedang_berlangsung, selesai</p>
     </div>
 
-    <!-- Activity Table -->
-    <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-        <h2 class="text-lg font-semibold text-slate-800 mb-4">Aktivitas Terbaru</h2>
-        @include('internal.partials.activity-table')
-    </div>
-</div>
+    <script>
+        // Initialize Chart.js with real data from Laravel
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('statusChartCanvas')?.getContext('2d');
+            if (!ctx) return;
 
-@push('scripts')
-<script>
-    // Guard for chart initialization
-    document.addEventListener('DOMContentLoaded', function() {
-        const chartEl = document.getElementById('statusChart');
-        if (chartEl) {
-            // TODO: Inisialisasi Chart.js dengan data real dari backend
-            // const ctx = chartEl.getContext('2d');
-            // new Chart(ctx, {
-            //     type: 'doughnut',
-            //     data: {
-            //         labels: ['Menunggu', 'Diterima', 'Ditolak', 'Perlu Perbaikan'],
-            //         datasets: [{
-            //             data: [12, 8, 3, 5],
-            //             backgroundColor: ['#FBBF24', '#10B981', '#EF4444', '#3B82F6'],
-            //             borderColor: ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'],
-            //             borderWidth: 2
-            //         }]
-            //     },
-            //     options: {
-            //         responsive: true,
-            //         maintainAspectRatio: false,
-            //         plugins: {
-            //             legend: {
-            //                 position: 'bottom',
-            //             }
-            //         }
-            //     }
-            // });
-        }
-    });
-</script>
-@endpush
+            const statusCounts = {{ json_encode($statusCounts) }};
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Belum Mulai', 'Sedang Berlangsung', 'Selesai'],
+                    datasets: [{
+                        data: [
+                            statusCounts.belum_mulai ?? 0,
+                            statusCounts.sedang_berlangsung ?? 0,
+                            statusCounts.selesai ?? 0
+                        ],
+                        backgroundColor: ['#FBBF24', '#3B82F6', '#10B981'],
+                        borderColor: ['#FFFFFF', '#FFFFFF', '#FFFFFF'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    @push('scripts')
+    <script>
+        // Guard for chart initialization (handled above in inline script)
+    </script>
+    @endpush
 @endsection

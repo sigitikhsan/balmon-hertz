@@ -41,12 +41,13 @@ class LoginTest extends TestCase
     public function test_admin_sidebar_destinations_are_available()
     {
         $user = User::factory()->create([
-            'role' => 'admin',
+            'role' => User::ROLE_ADMIN,
+            'status' => User::STATUS_AKTIF,
         ]);
 
         $this->actingAs($user);
 
-        $routes = [
+        $accessibleRoutes = [
             'internal.dashboard',
             'internal.applications.index',
             'internal.verifications.index',
@@ -61,11 +62,21 @@ class LoginTest extends TestCase
             'internal.reports.index',
         ];
 
+        $superAdminOnlyRoutes = [
+            'internal.admins.index',
+            'internal.roles.index',
+            'internal.settings.index',
+        ];
+
         $dashboard = $this->get(route('internal.dashboard'))->assertOk();
 
-        foreach ($routes as $routeName) {
+        foreach ($accessibleRoutes as $routeName) {
             $dashboard->assertSee(route($routeName), false);
             $this->get(route($routeName))->assertOk();
+        }
+
+        foreach ($superAdminOnlyRoutes as $routeName) {
+            $this->get(route($routeName))->assertStatus(403);
         }
     }
 
@@ -106,6 +117,41 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors();
+        $this->assertGuest();
+    }
+
+    public function test_inactive_admin_cannot_login()
+    {
+        User::factory()->create([
+            'email' => 'nonaktif@balmon.test',
+            'password' => bcrypt('password123'),
+            'role' => User::ROLE_ADMIN,
+            'status' => User::STATUS_NONAKTIF,
+        ]);
+
+        $response = $this->post('/akses-internal/login', [
+            'email' => 'nonaktif@balmon.test',
+            'password' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors(['email']);
+        $this->assertGuest();
+    }
+
+    public function test_inactive_admin_cannot_access_dashboard()
+    {
+        $user = User::factory()->create([
+            'email' => 'nonaktif@balmon.test',
+            'password' => bcrypt('password123'),
+            'role' => User::ROLE_ADMIN,
+            'status' => User::STATUS_NONAKTIF,
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/akses-internal/dashboard');
+
+        $response->assertRedirect('/akses-internal');
         $this->assertGuest();
     }
 

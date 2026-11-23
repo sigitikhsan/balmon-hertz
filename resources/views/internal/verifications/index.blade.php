@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@use(App\Models\Application)
 
 @section('title', 'Verifikasi Dokumen')
 @section('page_title', 'Verifikasi Dokumen')
@@ -32,6 +33,8 @@
                         <th class="px-5 py-4 font-semibold">Dokumen</th>
                         <th class="px-5 py-4 font-semibold">Status</th>
                         <th class="px-5 py-4 font-semibold text-center">Aksi</th>
+
+                    <th class="px-5 py-4 font-semibold text-center">Verifikasi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -57,6 +60,21 @@
                                    class="inline-flex items-center px-3 py-2 rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100">
                                     <i class="fa-solid fa-eye mr-2"></i>Detail
                                 </a>
+                            </td>
+                            <td class="px-5 py-4 text-center">
+                                @if($application->status === 'menunggu' || $application->status === 'perlu_perbaikan')
+                                    <form action="{{ route('internal.applications.status', $application) }}" method="POST" style="display:inline">
+                                        @csrf
+                                        <select name="status" onchange="this.form.submit()">
+                                            <option value="{{ Application::STATUS_DITERIMA }}">Diterima</option>
+                                            <option value="{{ Application::STATUS_DITOLAK }}">Ditolak</option>
+                                            <option value="{{ Application::STATUS_PERBAIKAN }}">Perbaikan</option>
+                                        </select>
+                                        <textarea name="note" class="mt-2 block w-full px-3 py-2 rounded-lg border border-slate-300 rounded-md" placeholder="Alasan penolakan atau permintaan perbaikan"></textarea>
+                                    </form>
+                                @else
+                                    <span class="text-slate-400">Sudah diverifikasi</span>
+                                @endif
                             </td>
                         </tr>
                     @empty
