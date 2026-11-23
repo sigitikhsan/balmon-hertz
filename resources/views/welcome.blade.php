@@ -34,7 +34,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                     <a href="{{ $navBase ?? '' }}#beranda" class="inline-flex items-center shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1265ED] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08245C] rounded-lg">
                         <span class="inline-flex items-center justify-center bg-white rounded-xl px-3 py-2">
-                            <img src="{{ asset('images/logo-hertz.png') }}" alt="Logo magang-hertz" class="h-10 w-auto">
+                            <img src="/images/logo-hertz.png" alt="Logo magang-hertz" class="h-10 w-auto">
                         </span>
                     </a>
                     <div class="hidden sm:block w-px h-10 bg-white/20" aria-hidden="true"></div>
